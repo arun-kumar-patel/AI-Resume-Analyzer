@@ -31,3 +31,5 @@ AI-powered Resume Analyzer and Intelligent Job Matching System built using Flask
 pip install -r requirements.txt
 python app.py
 ```
+## Home Page
+![Home Page](home-page.png)
