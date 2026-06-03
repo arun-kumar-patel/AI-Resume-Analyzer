@@ -45,3 +45,6 @@ python app.py
 
 ## Job Search Portal
 ![Job Search Portal](job-search-portal.png)
+
+## PlATFORM
+![PLATFORM](platform.png)
