@@ -36,3 +36,6 @@ python app.py
 
 ## Login Page
 ![Login Page](login-page.png)
+
+## Dashboard Page
+![Dashboard](dashboard.png)
