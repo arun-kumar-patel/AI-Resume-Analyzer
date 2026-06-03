@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FAQ - GoSkillNexa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    :root {
+      --primary-dark: #111439;
+      --primary-accent: #00FFFF;
+      --text-light: #F8F8F9;
+      --text-dark: #333;
+      --text-secondary: #555;
+      --bg-light: #FFFFFF;
+      --bg-secondary: #F8F8F9;
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --shadow: 0 8px 24px rgba(17, 20, 57, 0.08);
+      --border-color: #e0e0e0;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background-color: var(--bg-secondary);
+      color: var(--text-dark);
+      line-height: 1.7;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* --- Consistent Header --- */
+    header {
+      background-color: var(--bg-light);
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px;}
+    .logo { font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: var(--primary-dark); text-decoration: none; }
+    .logo span { color: var(--primary-accent); }
+    .nav-links { display: flex; align-items: center; gap: 25px; }
+    .nav-links a { color: var(--text-dark); text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+    .nav-links a:hover { color: var(--primary-accent); }
+    .nav-links .signup-link { color: var(--primary-accent); font-weight: 600; }
+
+    /* --- Main Content Section --- */
+    .content-section {
+        padding: 80px 0;
+    }
+    .section-title {
+        text-align: center;
+        font-family: var(--font-heading);
+        font-size: 42px;
+        color: var(--primary-dark);
+        margin-bottom: 15px;
+    }
+    .section-subtitle {
+        text-align: center;
+        font-size: 18px;
+        max-width: 600px;
+        margin: 0 auto 60px auto;
+        color: var(--text-secondary);
+    }
+
+    /* --- Accordion Styles --- */
+    .faq-category {
+        margin-bottom: 40px;
+    }
+    .faq-category h2 {
+        font-family: var(--font-heading);
+        font-size: 24px;
+        color: var(--primary-dark);
+        border-bottom: 2px solid var(--border-color);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+    .accordion-item {
+        background-color: var(--bg-light);
+        border-radius: 8px;
+        margin-bottom: 15px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border-color);
+    }
+    .accordion-question {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 18px;
+    }
+    .accordion-question .icon {
+        font-size: 20px;
+        transition: transform 0.3s ease;
+    }
+    .accordion-answer {
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease, padding 0.3s ease;
+        padding: 0 20px;
+        color: var(--text-secondary);
+    }
+    .accordion-item.active .accordion-answer {
+        padding: 0 20px 20px 20px;
+    }
+    .accordion-item.active .accordion-question .icon {
+        transform: rotate(45deg);
+    }
+
+    /* --- Contact CTA Section --- */
+    .contact-cta {
+        text-align: center;
+        background-color: var(--bg-light);
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+    }
+    .contact-cta h3 {
+        font-family: var(--font-heading);
+        font-size: 24px;
+        margin-top: 0;
+    }
+    .contact-cta .cta-btn {
+        display: inline-block;
+        padding: 12px 30px;
+        background: var(--primary-dark);
+        color: var(--text-light);
+        text-decoration: none;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+    }
+    .contact-cta .cta-btn:hover {
+        background-color: #24285e;
+        transform: translateY(-2px);
+    }
+    
+  </style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/upload">Upload</a>
+      <a href="/search">Search</a>
+      <a href="/contact">Contact</a>
+      <a href="/about">About</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+    <div class="container">
+        <section class="content-section">
+            <h1 class="section-title">Frequently Asked Questions</h1>
+            <p class="section-subtitle">Find answers to the most common questions about our platform. If you can't find what you're looking for, feel free to contact us.</p>
+
+            <div class="faq-accordion">
+                <div class="faq-category">
+                    <h2>General Questions</h2>
+                    <div class="accordion-item">
+                        <div class="accordion-question">
+                            <span>What is GoSkillNexa?</span>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-answer">
+                            <p>GoSkillNexa is an AI-powered job platform designed to make job hunting smarter and more efficient. We connect talented professionals with top employers by analyzing skills from resumes and matching them to the perfect job openings.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-question">
+                            <span>Is GoSkillNexa free to use?</span>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-answer">
+                            <p>Yes, for job seekers, all core features like resume upload, skill analysis, and job searching are completely free. We may offer premium services in the future.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-category">
+                    <h2>For Job Seekers</h2>
+                    <div class="accordion-item">
+                        <div class="accordion-question">
+                            <span>How do I upload my resume?</span>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-answer">
+                            <p>Simply navigate to the "Upload" page from the main menu. You can either drag and drop your resume file into the designated area or click to browse and select the file from your device.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-question">
+                            <span>What resume formats are supported?</span>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-answer">
+                            <p>We currently support the most common resume formats, including PDF, DOC, and DOCX. For best results, we recommend using a PDF.</p>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <div class="accordion-question">
+                            <span>How is my data kept secure?</span>
+                            <span class="icon">+</span>
+                        </div>
+                        <div class="accordion-answer">
+                            <p>Your privacy and data security are our top priorities. We use secure protocols and encryption to process and store your data. We will never share your personal information without your consent.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="contact-cta">
+                <h3>Still have questions?</h3>
+                <p>If you couldn't find the answer you were looking for, our team is here to help.</p>
+                <a href="/contact" class="cta-btn">Contact Us</a>
+            </div>
+        </section>
+    </div>
+</main>
+
+<script>
+  const accordionItems = document.querySelectorAll('.accordion-item');
+
+  accordionItems.forEach(item => {
+    const question = item.querySelector('.accordion-question');
+    const answer = item.querySelector('.accordion-answer');
+    const icon = item.querySelector('.icon');
+
+    question.addEventListener('click', () => {
+      const isActive = item.classList.contains('active');
+
+      // Close all other items
+      accordionItems.forEach(otherItem => {
+        if (otherItem !== item) {
+          otherItem.classList.remove('active');
+          otherItem.querySelector('.accordion-answer').style.maxHeight = 0;
+          otherItem.querySelector('.icon').textContent = '+';
+        }
+      });
+
+      // Toggle the clicked item
+      if (isActive) {
+        item.classList.remove('active');
+        answer.style.maxHeight = 0;
+        icon.textContent = '+';
+      } else {
+        item.classList.add('active');
+        answer.style.maxHeight = answer.scrollHeight + 'px';
+        icon.textContent = '-';
+      }
+    });
+  });
+</script>
+
+</body>
+</html>

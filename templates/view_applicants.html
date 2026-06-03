@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Profile Analytics - GoSkillNexa Pro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1);
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --active-blue: #2563eb;
+            --bg-body: #f8fafc;
+            --white: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--bg-body); 
+            color: var(--text-main); 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+        }
+
+        header { 
+            background: var(--navy-navbar); 
+            height: 75px; 
+            display: flex; 
+            align-items: center; 
+            position: sticky; 
+            top: 0; 
+            z-index: 1100; 
+        }
+        .nav-container { 
+            max-width: 1400px; 
+            width: 100%; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo { font-size: 26px; font-weight: 800; text-decoration: none; color: white; font-family: 'Outfit', sans-serif; }
+        .logo span { color: var(--brand-primary); }
+        .back-link { 
+            color: #cbd5e1; 
+            text-decoration: none; 
+            font-weight: 700; 
+            font-size: 14px; 
+            display: flex; 
+            align-items: center; 
+            gap: 8px;
+            transition: 0.3s;
+        }
+        .back-link:hover { color: white; transform: translateX(-5px); }
+
+        main { flex: 1; padding: 50px 0; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        .analytics-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 30px; }
+        
+        .card { 
+            background: var(--white); 
+            border-radius: 30px; 
+            border: 1px solid #e2e8f0; 
+            padding: 35px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.02); 
+        }
+        
+        h2 { 
+            font-family: 'Outfit', sans-serif; 
+            font-size: 22px; 
+            margin-bottom: 25px; 
+            color: #0f172a; 
+            display: flex; 
+            align-items: center; 
+            gap: 12px; 
+        }
+
+        .chart-wrapper { height: 350px; position: relative; }
+
+        /* --- EMPTY STATE STYLE --- */
+        .empty-visual {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-muted);
+        }
+        .empty-visual i { font-size: 45px; opacity: 0.2; margin-bottom: 15px; display: block; }
+
+        /* --- TABLE STYLE --- */
+        .views-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .views-table th { text-align: left; padding: 12px; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; border-bottom: 2px solid #f1f5f9; }
+        .views-table td { padding: 18px 12px; font-size: 14px; border-bottom: 1px solid #f1f5f9; font-weight: 500; }
+        .ip-tag { background: #f1f5f9; color: var(--text-main); padding: 5px 12px; border-radius: 10px; font-family: monospace; font-size: 13px; border: 1px solid #e2e8f0; }
+
+        footer { background: var(--navy-navbar); color: #94a3b8; text-align: center; padding: 30px 0; font-size: 14px; margin-top: auto; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+        <a href="/employer-dashboard" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a>
+    </div>
+</header>
+
+<main>
+    <div class="container">
+        <div style="margin-bottom: 45px;">
+            <h1 style="font-family: 'Outfit', sans-serif; font-size: 36px; color: #0f172a;">Profile Analytics</h1>
+            <p style="color: var(--text-muted); font-size: 16px; font-weight: 500;">Monitor your reach and visitor interactions in real-time.</p>
+        </div>
+
+        <div class="analytics-grid">
+            <div class="card">
+                <h2><i class="fas fa-chart-line" style="color: var(--active-blue);"></i> Visibility Trend</h2>
+                <div class="chart-wrapper">
+                    {% if counts and counts|sum > 0 %}
+                        <canvas id="viewsChart"></canvas>
+                    {% else %}
+                        <div class="empty-visual">
+                            <i class="fas fa-chart-area"></i>
+                            <p>Not enough data to generate trend.<br>Share your profile to get more views!</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card">
+                <h2><i class="fas fa-user-clock" style="color: #6366f1;"></i> Recent Visitors</h2>
+                <div style="max-height: 400px; overflow-y: auto;">
+                    {% if recent_views %}
+                    <table class="views-table">
+                        <thead>
+                            <tr><th>Visitor IP</th><th>Timestamp</th></tr>
+                        </thead>
+                        <tbody>
+                            {% for view in recent_views %}
+                            <tr>
+                                <td><span class="ip-tag">{{ view.viewer_ip }}</span></td>
+                                <td style="color: var(--text-muted);">{{ view.viewed_at.strftime('%H:%M, %d %b') }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <div class="empty-visual">
+                        <i class="fas fa-ghost"></i>
+                        <p>No visitors recorded yet.</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <div class="container">© 2026 Resume Analyzer by GoSkillNexa. All rights reserved. | Empowering Your Hiring Journey</div>
+</footer>
+
+<script>
+    {% if counts and counts|sum > 0 %}
+    const ctx = document.getElementById('viewsChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ dates | tojson }},
+            datasets: [{
+                label: 'Views',
+                data: {{ counts | tojson }},
+                borderColor: '#0ea5e9',
+                backgroundColor: 'rgba(14, 165, 233, 0.1)',
+                borderWidth: 4,
+                tension: 0.4,
+                fill: true,
+                pointBackgroundColor: '#ffffff',
+                pointBorderColor: '#0ea5e9',
+                pointRadius: 6,
+                pointHoverRadius: 8
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: { 
+                    beginAtZero: true, 
+                    ticks: { stepSize: 1, font: { weight: 'bold' } },
+                    grid: { color: '#f1f5f9' }
+                },
+                x: { 
+                    grid: { display: false },
+                    ticks: { font: { weight: 'bold' } }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    backgroundColor: '#0a192f',
+                    padding: 12,
+                    titleFont: { size: 14, family: 'Plus Jakarta Sans' },
+                    bodyFont: { size: 14 },
+                    displayColors: false
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+
+</body>
+</html>

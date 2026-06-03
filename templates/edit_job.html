@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Job - GoSkillNexa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <style>
+        /* === COMMON STYLES === */
+        :root {
+            --primary-dark: #111439;
+            --primary-accent: #00FFFF;
+            --text-light: #F8F8F9;
+            --text-dark: #333;
+            --bg-light: #FFFFFF;
+            --bg-secondary: #F8F8F9;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --shadow: 0 8px 24px rgba(17, 20, 57, 0.08);
+            --border-color: #e0e0e0;
+        }
+
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            background-color: var(--bg-secondary);
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+        
+        /* === PAGE SPECIFIC STYLES (post_job.html se milte-julte) === */
+        .form-section-wrapper {
+            max-width: 800px;
+            margin: 50px auto;
+            background-color: var(--bg-light);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: var(--shadow);
+        }
+        .form-section-wrapper h1 {
+            font-family: var(--font-heading);
+            color: var(--primary-dark);
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 30px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+        .form-group { margin-bottom: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #555;
+        }
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            box-sizing: border-box;
+            font-family: var(--font-body);
+        }
+        .form-group textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-dark);
+            color: var(--text-light);
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="form-section-wrapper">
+        <h1><i class="fas fa-edit"></i> Edit Job Posting</h1>
+        <form method="POST">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="job_title">Job Title</label>
+                    <input type="text" id="job_title" name="job_title" value="{{ job.job_title }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="company_name">Company Name</label>
+                    <input type="text" id="company_name" name="company_name" value="{{ job.company_name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" value="{{ job.location }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="job_type">Job Type</label>
+                    <select id="job_type" name="job_type" required>
+                        <option value="Full-time" {% if job.job_type == 'Full-time' %}selected{% endif %}>Full-time</option>
+                        <option value="Part-time" {% if job.job_type == 'Part-time' %}selected{% endif %}>Part-time</option>
+                        <option value="Contract" {% if job.job_type == 'Contract' %}selected{% endif %}>Contract</option>
+                        <option value="Internship" {% if job.job_type == 'Internship' %}selected{% endif %}>Internship</option>
+                        <option value="Remote" {% if job.job_type == 'Remote' %}selected{% endif %}>Remote</option>
+                    </select>
+                </div>
+                <div class="form-group full-width">
+                    <label for="salary">Salary Range (Optional)</label>
+                    <input type="text" id="salary" name="salary" value="{{ job.salary or '' }}">
+                </div>
+                <div class="form-group full-width">
+                    <label for="application_link">Application Link</label>
+                    <input type="url" id="application_link" name="application_link" value="{{ job.application_link }}" required>
+                </div>
+                <div class="form-group full-width">
+                    <label for="description">Job Description</label>
+                    <textarea id="description" name="description" required>{{ job.description }}</textarea>
+                </div>
+            </div>
+            <div class="form-group full-width" style="margin-top: 20px;">
+                <button type="submit" class="btn-submit">Save Changes</button>
+            </div>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>

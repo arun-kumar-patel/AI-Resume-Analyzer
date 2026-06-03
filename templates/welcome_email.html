@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Email clients support simple CSS */
+        body { margin: 0; padding: 0; background-color: #f1f5f9; font-family: 'Inter', -apple-system, sans-serif; }
+        .wrapper { width: 100%; table-layout: fixed; background-color: #f1f5f9; padding-bottom: 40px; }
+        .main-container { max-width: 600px; background-color: #ffffff; margin: 0 auto; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        
+        /* Header Glow Effect */
+        .header { background: #0f172a; padding: 50px 20px; text-align: center; border-bottom: 4px solid #3b82f6; }
+        .header h1 { color: #ffffff; margin: 0; font-size: 32px; letter-spacing: 2px; font-weight: 800; text-transform: uppercase; }
+        
+        .hero-section { padding: 40px 40px 20px 40px; text-align: left; }
+        .hero-section h2 { color: #1e293b; font-size: 26px; font-weight: 700; margin-bottom: 10px; }
+        .hero-section p { color: #64748b; font-size: 16px; line-height: 1.7; }
+        
+        /* Highlight Box */
+        .feature-box { background: #f8fafc; border-radius: 12px; padding: 20px; margin: 25px 0; border-left: 5px solid #3b82f6; }
+        .feature-item { margin-bottom: 15px; display: flex; align-items: center; }
+        .feature-text { color: #334155; font-size: 15px; font-weight: 500; }
+
+        /* Premium CTA */
+        .cta-wrapper { text-align: center; padding: 30px 0; }
+        .cta-button { 
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); 
+            color: #ffffff !important; 
+            text-decoration: none; 
+            padding: 18px 45px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 16px;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+        }
+
+        .footer { background: #f8fafc; padding: 35px 20px; text-align: center; border-top: 1px solid #e2e8f0; }
+        .footer p { color: #94a3b8; font-size: 13px; margin: 5px 0; }
+        .social-link { color: #3b82f6; text-decoration: none; font-weight: 600; margin: 0 8px; }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="main-container">
+            <div class="header">
+                <h1>GoSkillNexa</h1>
+            </div>
+
+            <div class="hero-section">
+                <h2>The journey to your dream career starts here.</h2>
+                <p>Hello <strong style="color: #3b82f6;">{{ name }}</strong>,</p>
+                <p>Welcome to <strong>GoSkillNexa</strong>. You’ve just joined a community of ambitious professionals and top-tier recruiters. We don't just list jobs; we build careers.</p>
+                
+                <div class="feature-box">
+                    <div class="feature-text" style="margin-bottom: 10px;"><strong>Next steps for you:</strong></div>
+                    <div class="feature-text">✅ Complete your professional profile.</div>
+                    <div class="feature-text">✅ Upload your latest resume for AI matching.</div>
+                    <div class="feature-text">✅ Explore exclusive job openings.</div>
+                </div>
+
+                <div class="cta-wrapper">
+                    <a href="{{ url_for('login', _external=True) }}" class="cta-button">Access Your Dashboard</a>
+                </div>
+
+                <p style="font-size: 14px; text-align: center;">If you have any questions, simply reply to this email. Our team is here to help!</p>
+            </div>
+
+            <div class="footer">
+                <p>&copy; 2026 Resume Analyzer by GoSkillNexa. All rights reserved. Empowering Your Future.</p>
+                <p>Mumbai, India | High-Security Career Hub</p>
+                <div style="margin-top: 15px;">
+                    <a href="#" class="social-link">LinkedIn</a>
+                    <a href="#" class="social-link">Instagram</a>
+                    <a href="#" class="social-link">Twitter</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

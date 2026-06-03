@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employer Dashboard - GoSkillNexa Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1);
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --active-blue: #2563eb;
+            --bg-body: #f8fafc;
+            --white: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --message-green-bg: #dcfce7; 
+            --message-green-text: #166534;
+            --message-green-border: #bbf7d0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--bg-body); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
+
+        header { 
+            background: var(--navy-navbar); 
+            position: sticky; 
+            top: 0; 
+            z-index: 1100; 
+            height: 75px; 
+            display: flex; 
+            align-items: center; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .nav-container { 
+            max-width: 1400px; 
+            width: 100%; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+        .logo { font-size: 26px; font-weight: 800; text-decoration: none; color: white; font-family: 'Outfit', sans-serif; }
+        .logo span { color: var(--brand-primary); }
+        
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a { color: #cbd5e1; text-decoration: none !important; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: white; }
+
+        .nav-profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid var(--brand-primary);
+            object-fit: cover;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .nav-profile-pic:hover { transform: scale(1.1); }
+
+        .btn-nav-plan {
+            color: var(--brand-primary) !important;
+            border: 1px solid rgba(14, 165, 233, 0.4);
+            padding: 8px 16px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn { 
+            background: rgba(244, 63, 94, 0.15); 
+            color: #f43f5e !important; 
+            padding: 10px 20px; 
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        #flash-wrapper { position: fixed; top: 75px; left: 50%; transform: translateX(-50%); z-index: 1200; width: 100%; max-width: 850px; padding: 0 20px; }
+        .alert-custom { padding: 12px 35px; border-radius: 0 0 25px 25px; display: flex; align-items: center; gap: 15px; font-weight: 700; font-size: 15px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); border: 1px solid var(--message-green-border); background: var(--message-green-bg); color: var(--message-green-text); animation: slideInDown 0.5s ease-out; }
+
+        .container { max-width: 1300px; margin: 0 auto; padding: 0 24px; }
+        .dash-hero { background: white; border-bottom: 1px solid #e2e8f0; padding: 45px 0; margin-bottom: 40px; }
+        .hero-flex { display: flex; justify-content: space-between; align-items: center; }
+        .welcome-title h1 { font-family: 'Outfit', sans-serif; font-size: 34px; color: #0f172a; }
+        
+        .btn-post-main { background: var(--brand-gradient); color: white; padding: 15px 30px; border-radius: 15px; text-decoration: none; font-weight: 800; display: flex; align-items: center; gap: 10px; transition: 0.3s; box-shadow: 0 10px 20px rgba(99, 102, 241, 0.2); }
+
+        .top-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 30px; margin-bottom: 40px; }
+        .card { background: var(--white); border-radius: 28px; border: 1px solid #e2e8f0; padding: 30px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+
+        .usage-bar { height: 10px; background: #f1f5f9; border-radius: 20px; overflow: hidden; margin-top: 15px; border: 1px solid #e2e8f0; }
+        .usage-fill { height: 100%; background: var(--brand-gradient); border-radius: 20px; }
+
+        /* ✅ STYLING FOR QUICK INSIGHTS LINKS */
+        .stat-link { text-decoration: none; color: inherit; display: block; transition: 0.3s; }
+        .stat-link:hover .stat-item { background: white; transform: translateY(-5px); border: 1px solid var(--brand-primary); box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+
+        .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        .stat-item { text-align: center; padding: 25px; border-radius: 24px; background: #f8fafc; transition: 0.3s; height: 100%; border: 1px solid transparent; }
+        .stat-item i { font-size: 24px; color: var(--active-blue); margin-bottom: 15px; display: block; }
+        .stat-item span { font-size: 32px; font-weight: 800; color: #0f172a; display: block; }
+
+        .main-card { background: white; border-radius: 30px; border: 1px solid #e2e8f0; padding: 0; overflow: hidden; }
+        .jobs-table { width: 100%; border-collapse: collapse; }
+        .jobs-table th { background: #f8fafc; text-align: left; padding: 20px 30px; font-size: 13px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
+        .jobs-table td { padding: 20px 30px; border-bottom: 1px solid #f1f5f9; vertical-align: middle; }
+
+        .table-job-info { display: flex; align-items: center; gap: 15px; }
+        .table-logo { width: 45px; height: 45px; border-radius: 10px; object-fit: cover; border: 1px solid #edf2f7; }
+
+        .action-group { display: flex; gap: 12px; }
+        .act-btn { width: 44px; height: 44px; border-radius: 14px; display: grid; place-items: center; text-decoration: none; transition: 0.3s; font-size: 16px; border: none; cursor: pointer; }
+        .edit-btn { background: #eff6ff; color: #2563eb; }
+        .delete-btn { background: #fff1f2; color: #e11d48; }
+        .edit-btn:hover { background: #2563eb; color: white; }
+        .delete-btn:hover { background: #e11d48; color: white; }
+
+        footer { padding: 50px 0; text-align: center; color: var(--text-muted); font-size: 14px; border-top: 1px solid #e2e8f0; margin-top: 40px; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="nav-container">
+        <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="{{ url_for('hire') }}" class="btn-nav-plan"><i class="fas fa-crown"></i> Choose Plan</a>
+            <a href="{{ url_for('post_job') }}">Post Job</a>
+            <a href="{{ url_for('dashboard') }}">
+                <img src="{{ url_for('static', filename='profile_pics/' + (session.profile_image if session.profile_image else 'default.png')) }}?v={{ range(1, 1000) | random }}" 
+                     alt="Profile" class="nav-profile-pic" onerror="this.src='/static/profile_pics/default.png';">
+            </a>
+            <a href="javascript:void(0);" class="logout-btn" onclick="confirmLogout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+</header>
+
+<div id="flash-wrapper">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert-custom">
+            <i class="fas fa-check-circle" style="font-size: 20px;"></i> 
+            <span>{{ message }}</span>
+            <i class="fas fa-times" onclick="closeFlash(this)" style="margin-left:auto; cursor:pointer; opacity:0.6;"></i>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+</div>
+
+<div class="dash-hero">
+    <div class="container hero-flex">
+        <div class="welcome-title" data-aos="fade-right">
+            <h1>Employer Dashboard</h1>
+            <p>Welcome back, <strong>{{ session.user_name }}</strong>. Track your progress today.</p>
+        </div>
+        <a href="{{ url_for('post_job') }}" class="btn-post-main" data-aos="fade-left">
+            <i class="fas fa-plus"></i> Post New Job
+        </a>
+    </div>
+</div>
+
+<main class="container">
+    <div class="top-grid">
+        <div class="card" data-aos="fade-up">
+            <p style="font-size: 12px; font-weight: 800; color: var(--text-muted);">CURRENT SUBSCRIPTION</p>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 15px;">
+                <div>
+                    <h2 style="font-weight: 800; font-size: 24px;">
+                        {% if session.is_pro == 1 %} 🚀 Pro Match {% elif session.is_pro == 2 %} 👑 Enterprise {% else %} ⚡ Starter {% endif %}
+                    </h2>
+                </div>
+                
+                <div style="text-align: right;">
+                    {% set limit = 10 if session.is_pro == 1 else (999 if session.is_pro == 2 else 2) %}
+                    {% set consumed_posts = posts_consumed if posts_consumed is defined else 0 %}
+                    
+                    <span style="font-size: 24px; font-weight: 800; color: var(--active-blue);">
+                        {{ limit - consumed_posts if limit < 500 else '∞' }}
+                    </span>
+                    <p style="font-size: 10px; font-weight: 800; color: var(--text-muted);">POSTS LEFT</p>
+                </div>
+            </div>
+            
+            <div class="usage-bar">
+                {% set percentage = (consumed_posts / limit * 100) if limit < 500 else 0 %}
+                <div class="usage-fill" style="width: {{ percentage if percentage <= 100 else 100 }}%;"></div>
+            </div>
+
+            <p style="font-size: 15px; font-weight: 700; color: var(--brand-primary); margin-top: 20px; display: flex; align-items: center; gap: 10px;">
+                <i class="fas fa-calendar-alt"></i> Next Reset: {{ next_reset_date if next_reset_date else 'N/A' }}
+            </p>
+        </div>
+
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+            <p style="font-size: 12px; font-weight: 800; color: var(--text-muted);">QUICK INSIGHTS</p>
+            <div class="stats-row" style="margin-top: 15px;">
+                
+                <a href="#manage-section" class="stat-link">
+                    <div class="stat-item">
+                        <i class="fas fa-briefcase"></i>
+                        <span>{{ jobs|length }}</span>
+                        <p style="font-size: 11px; font-weight: 700; color: var(--text-muted);">LIVE JOBS</p>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('view_applicants') }}" class="stat-link">
+                    <div class="stat-item">
+                        <i class="fas fa-users"></i>
+                        <span>{{ applicants_count if applicants_count else 0 }}</span>
+                        <p style="font-size: 11px; font-weight: 700; color: var(--text-muted);">APPLICANTS</p>
+                    </div>
+                </a>
+
+                <a href="{{ url_for('profile_analytics') }}" class="stat-link">
+                    <div class="stat-item">
+                        <i class="fas fa-eye"></i>
+                        <span>{{ hits_count if hits_count else 0 }}</span>
+                        <p style="font-size: 11px; font-weight: 700; color: var(--text-muted);">VIEWS</p>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="main-card" id="manage-section" data-aos="fade-up" data-aos-delay="200">
+        <div style="padding: 25px 30px; border-bottom: 1px solid #f1f5f9;">
+            <h2 style="font-size: 20px; font-weight: 800;"><i class="fas fa-list-check" style="color: var(--active-blue); margin-right: 12px;"></i> Active Postings</h2>
+        </div>
+        {% if jobs %}
+            <table class="jobs-table">
+                <thead><tr><th>Job Details</th><th>Location</th><th>Actions</th></tr></thead>
+                <tbody>
+                    {% for job in jobs %}
+                    <tr>
+                        <td>
+                            <div class="table-job-info">
+                                <img src="{{ url_for('static', filename='profile_pics/' + (job.profile_image if job.profile_image else 'default.png')) }}?v={{ range(1, 1000) | random }}" 
+                                     alt="Logo" class="table-logo" onerror="this.src='/static/profile_pics/default.png';">
+                                <div>
+                                    <div style="font-weight: 800; font-size: 16px; color: #0f172a;">{{ job.job_title }}</div>
+                                    <small style="color: var(--text-muted); font-weight: 600;">{{ job.company_name }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td style="font-weight: 700; font-size: 14px; color: #475569;">{{ job.location }}</td>
+                        <td>
+                            <div class="action-group">
+                                <a href="{{ url_for('edit_job', job_id=job.id) }}" class="act-btn edit-btn" title="Edit"><i class="fas fa-pen-to-square"></i></a>
+                                <form action="{{ url_for('delete_job', job_id=job.id) }}" method="POST" id="delete-form-{{ job.id }}" style="margin:0;">
+                                    <button type="button" class="act-btn delete-btn" onclick="confirmDelete('{{ job.id }}')" title="Delete">
+                                        <i class="fas fa-trash-can"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div style="text-align: center; padding: 60px; color: var(--text-muted);">
+                <i class="fas fa-folder-open" style="font-size: 40px; opacity: 0.3; margin-bottom: 20px;"></i>
+                <p>No job listings found.</p>
+            </div>
+        {% endif %}
+    </div>
+</main>
+
+<footer><p>© 2026 Resume Analyzer by GoSkillNexa. All rights reserved.</p></footer>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+
+    // ✅ FIXED: Robust Flash Auto-hide (10 seconds)
+    setTimeout(() => {
+        const flashWrapper = document.getElementById('flash-wrapper');
+        if (flashWrapper) {
+            document.querySelectorAll('.alert-custom').forEach(flash => {
+                flash.style.animation = "fadeOutUp 0.5s forwards";
+                setTimeout(() => flash.remove(), 500);
+            });
+        }
+    }, 10000); 
+
+    function confirmDelete(jobId) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: "This posted job will be permanently deleted. Credit won't be refunded!",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            cancelButtonColor: '#64748b',
+            confirmButtonText: 'Yes, Delete it!',
+            cancelButtonText: 'Cancel',
+            borderRadius: '20px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + jobId).submit();
+            }
+        })
+    }
+
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Sign Out?',
+            text: "Are you sure you want to log out of your session?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0ea5e9', 
+            cancelButtonColor: '#f43f5e',  
+            confirmButtonText: 'Yes, Sign out',
+            cancelButtonText: 'Cancel',
+            borderRadius: '20px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ url_for('logout') }}";
+            }
+        })
+    }
+
+    function closeFlash(el) {
+        const alert = el.parentElement;
+        alert.style.animation = "fadeOutUp 0.4s forwards";
+        setTimeout(() => alert.remove(), 400);
+    }
+</script>
+
+</body>
+</html>

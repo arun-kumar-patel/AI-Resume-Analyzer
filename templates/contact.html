@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - GoSkillNexa Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1, #f43f5e);
+            --navy-deep: #030712; 
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --active-blue: #2563eb;
+            --white: #ffffff;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: #f8fafc; color: #1e293b; line-height: 1.6; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- HEADER --- */
+        header {
+            background: var(--navy-navbar);
+            padding: 16px 0;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; }
+        .logo { 
+            font-size: 24px; font-weight: 800; text-decoration: none; color: white;
+            font-family: var(--font-display);
+        }
+        .logo span { color: var(--brand-primary); }
+        .nav-links a { color: #cbd5e1; text-decoration: none; margin-left: 20px; font-weight: 600; font-size: 14px; transition: 0.3s; }
+        .nav-links a:hover { color: var(--brand-primary); }
+
+        /* --- STUCK-TO-NAVBAR FLASH MESSAGE --- */
+        .flash-container {
+            position: fixed;
+            top: 70px; /* Updated to 70px as requested */
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 2000;
+            width: auto;
+            min-width: 320px;
+            pointer-events: none;
+        }
+        .flash-msg {
+            background: #10b981;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 0 0 16px 16px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-weight: 700;
+            box-shadow: 0 10px 25px rgba(16, 185, 129, 0.2);
+            pointer-events: auto;
+            animation: slideFromNav 0.4s ease-out forwards;
+        }
+        @keyframes slideFromNav {
+            from { transform: translateY(-100%); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* --- CONTACT SECTION --- */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 60px;
+            padding: 80px 0;
+            align-items: start;
+        }
+
+        .contact-info h1 {
+            font-family: var(--font-display);
+            font-size: 48px; font-weight: 800; line-height: 1.1; margin-bottom: 20px; color: var(--navy-deep);
+        }
+
+        .contact-info p { font-size: 18px; color: #64748b; margin-bottom: 40px; }
+
+        .info-item {
+            display: flex; align-items: center; gap: 20px; margin-bottom: 30px; text-decoration: none; transition: 0.3s;
+        }
+        .info-item i {
+            width: 50px; height: 50px; background: white; color: var(--active-blue);
+            display: grid; place-items: center; border-radius: 12px; font-size: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05); transition: 0.3s;
+        }
+        .info-item:hover i { background: var(--active-blue); color: white; }
+
+        .info-content h4 { font-size: 14px; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
+        .info-content p { font-size: 16px; color: var(--navy-deep); font-weight: 700; margin: 0; }
+
+        /* --- FORM STYLING --- */
+        .contact-card {
+            background: white; padding: 50px; border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(10, 25, 47, 0.08); border: 1px solid #e2e8f0;
+        }
+
+        .form-group { margin-bottom: 25px; }
+        .form-group label { display: block; font-weight: 700; color: var(--navy-deep); margin-bottom: 10px; font-size: 14px; }
+        
+        .input-field, .select-field, .textarea-field {
+            width: 100%; padding: 15px; border: 2px solid #f1f5f9; border-radius: 12px;
+            font-size: 15px; font-family: inherit; background: #f8fafc; transition: 0.3s;
+        }
+        .input-field:focus, .select-field:focus, .textarea-field:focus {
+            outline: none; border-color: var(--active-blue); background: white;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .btn-submit {
+            width: 100%; padding: 16px; background: var(--active-blue); color: white;
+            border: none; border-radius: 12px; font-weight: 800; font-size: 16px;
+            cursor: pointer; transition: 0.2s; display: flex; justify-content: center; align-items: center; gap: 10px;
+        }
+        .btn-submit:hover { background: #1d4ed8; }
+        .btn-submit:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        @media (max-width: 992px) {
+            .contact-wrapper { grid-template-columns: 1fr; gap: 40px; }
+            .contact-info { text-align: center; }
+            .info-item { justify-content: center; }
+            .flash-container { top: 70px; width: 100%; padding: 0 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="flash-container">
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <div class="flash-msg" id="flashPopup">
+              <i class="fas fa-check-circle"></i>
+              <span>{{ message }}</span>
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    {% if request.args.get('success') %}
+      <div class="flash-msg" id="flashPopup">
+          <i class="fas fa-check-circle"></i>
+          <span>Thank you! Your message has been sent successfully.</span>
+      </div>
+    {% endif %}
+</div>
+
+<header id="mainNavbar">
+    <div class="container">
+        <nav>
+            <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+            <div class="nav-links">
+                <a href="/">Home</a>
+                <a href="/search">Jobs</a>
+                <a href="/hire">Pricing</a>
+                <a href="/about">About</a>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="container">
+    <div class="contact-wrapper">
+        <div class="contact-info" data-aos="fade-right">
+            <h1>Let's build the <span style="color: var(--active-blue);">future</span> together.</h1>
+            <p>Have a question about our AI matching or looking for an Enterprise solution? Our team is here to help.</p>
+            
+            <a href="mailto:goskillnexa@gmail.com" class="info-item">
+                <i class="fas fa-envelope-open-text"></i>
+                <div class="info-content">
+                    <h4>Email Us</h4>
+                    <p>goskillnexa@gmail.com</p>
+                </div>
+            </a>
+
+            <a href="https://linkedin.com/in/goskillnexa" target="_blank" class="info-item">
+                <i class="fab fa-linkedin-in"></i>
+                <div class="info-content">
+                    <h4>Connect</h4>
+                    <p>linkedin.com/in/goskillnexa</p>
+                </div>
+            </a>
+
+            <div class="info-item">
+                <i class="fas fa-map-pin"></i>
+                <div class="info-content">
+                    <h4>Location</h4>
+                    <p>Supreme Business Park, Powai, Mumbai 400076</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-card" data-aos="fade-left">
+            <form id="contactForm" action="/contact" method="POST" onsubmit="return startLoading()">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" name="name" class="input-field" placeholder="John Doe" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <input type="email" name="email" class="input-field" placeholder="john@company.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>How can we help?</label>
+                    <select name="subject" class="select-field" required>
+                        <option value="General Inquiry">General Inquiry</option>
+                        <option value="Contact Sales">Contact Sales (Enterprise)</option>
+                        <option value="Technical Support">Technical Support</option>
+                        <option value="Feedback">Feedback</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Message</label>
+                    <textarea name="message" class="textarea-field" placeholder="Tell us about your requirements..." rows="4" required></textarea>
+                </div>
+
+                <button type="submit" id="submitBtn" class="btn-submit">
+                    <span id="btnText">Send Message</span> <i class="fas fa-paper-plane" id="btnIcon"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+</main>
+
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>
+    AOS.init({ duration: 800, once: true });
+
+    function startLoading() {
+        const btn = document.getElementById('submitBtn');
+        const text = document.getElementById('btnText');
+        const icon = document.getElementById('btnIcon');
+
+        btn.disabled = true;
+        text.innerText = "Sending...";
+        icon.className = "fas fa-spinner fa-spin";
+        return true; 
+    }
+
+    window.onload = function() {
+        const popup = document.getElementById('flashPopup');
+        if(popup) {
+            setTimeout(() => {
+                popup.style.transition = "0.5s ease-in-out";
+                popup.style.transform = "translateY(-120%)";
+                popup.style.opacity = "0";
+                setTimeout(() => {
+                    if (window.location.search.includes('success')) {
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
+                    popup.remove();
+                }, 500);
+            }, 5000);
+        }
+    }
+</script>
+
+</body>
+</html>

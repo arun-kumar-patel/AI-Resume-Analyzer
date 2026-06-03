@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing Plans - GoSkillNexa Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1, #f43f5e);
+            --navy-deep: #030712; 
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --active-blue: #2563eb; 
+            --white: #ffffff;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: #f0f9ff; color: var(--navy-deep); line-height: 1.6; display: flex; flex-direction: column; min-height: 100vh; }
+
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+        main { flex: 1; }
+
+        /* --- HEADER SECTION --- */
+        .pricing-hero { 
+            padding: 120px 0 60px; text-align: center;
+            background: radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.1) 0px, transparent 50%);
+        }
+        .pricing-hero h1 { font-family: var(--font-display); font-size: 48px; font-weight: 800; color: #000; margin-bottom: 15px; }
+        .pricing-hero p { color: #64748b; font-size: 18px; max-width: 600px; margin: 0 auto; }
+
+        /* --- PRICING GRID --- */
+        .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 50px; padding-bottom: 100px; }
+
+        .price-card { 
+            background: var(--white); padding: 50px 35px; border-radius: 28px; border: 1px solid #e2e8f0; 
+            text-align: center; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+            display: flex; flex-direction: column;
+        }
+
+        .price-card:hover { 
+            transform: translateY(-15px); border-color: var(--brand-primary); 
+            box-shadow: 0 25px 50px -12px rgba(14, 165, 233, 0.25);
+        }
+
+        .price-card.popular { border: 2px solid var(--brand-primary); }
+        .popular-badge {
+            position: absolute; top: -15px; left: 50%; transform: translateX(-50%);
+            background: var(--brand-gradient); color: white; padding: 6px 20px;
+            border-radius: 50px; font-size: 12px; font-weight: 800; text-transform: uppercase;
+        }
+
+        .price-card h3 { font-size: 20px; font-weight: 700; color: #64748b; margin-bottom: 15px; }
+        .price-card .amount { font-family: var(--font-display); font-size: 52px; font-weight: 800; color: var(--navy-navbar); }
+        .price-card .amount span { font-size: 16px; color: #94a3b8; }
+
+        .features-list { list-style: none; margin: 30px 0; text-align: left; }
+        .features-list li { margin-bottom: 12px; font-size: 15px; color: #475569; display: flex; align-items: center; gap: 10px; }
+        .features-list li i { color: #10b981; font-size: 14px; }
+
+        /* --- BUTTONS STYLING --- */
+        .btn-buy { 
+            display: block; width: 100%; padding: 15px; border-radius: 12px; font-weight: 700;
+            text-decoration: none; border: none; cursor: pointer; transition: 0.3s; font-size: 16px;
+            margin-top: auto; 
+            background: var(--active-blue); 
+            color: white;
+            box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+            text-align: center;
+        }
+
+        .btn-buy:hover { 
+            background: var(--brand-primary); 
+            box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+            transform: translateY(-3px) scale(1.02);
+            color: white;
+        }
+
+        /* --- LEGAL FOOTER --- */
+        footer {
+            background: #010409;
+            padding: 60px 0 30px;
+            color: #94a3b8;
+            text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+        .footer-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 20px; flex-wrap: wrap; }
+        .footer-links a { color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s; }
+        .footer-links a:hover { color: var(--brand-primary); }
+        .copyright { font-size: 13px; color: #64748b; }
+
+        @media (max-width: 992px) { .pricing-grid { grid-template-columns: 1fr; } .footer-links { gap: 15px; } }
+    </style>
+</head>
+<body>
+
+    <main>
+        <section class="pricing-hero">
+            <div class="container" data-aos="fade-down">
+                <h1>Ready to scale your hiring?</h1>
+                <p>Choose the perfect plan for your recruitment needs. No hidden fees.</p>
+            </div>
+        </section>
+
+        <section class="container">
+            <div class="pricing-grid">
+                
+                <div class="price-card" data-aos="fade-up" data-aos-delay="100">
+                    <h3>Starter</h3>
+                    <div class="amount">₹0<span>/mo</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> 2 active job posts</li>
+                        <li><i class="fas fa-check-circle"></i> Basic AI screening</li>
+                        <li><i class="fas fa-check-circle"></i> Email support</li>
+                    </ul>
+                    <a href="{{ url_for('employer_dashboard') }}" class="btn-buy">Get Started</a>
+                </div>
+
+                <div class="price-card popular" data-aos="fade-up" data-aos-delay="200">
+                    <div class="popular-badge">Most Popular</div>
+                    <h3>Pro Match</h3>
+                    <div class="amount">₹299<span>/mo</span></div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> 10 active job posts</li>
+                        <li><i class="fas fa-check-circle"></i> Advanced AI Match-Scoring</li>
+                        <li><i class="fas fa-check-circle"></i> Direct contact candidates</li>
+                        <li><i class="fas fa-check-circle"></i> Priority 24/7 support</li>
+                    </ul>
+                    <button id="rzp-button1" class="btn-buy">Buy Pro Now</button>
+                </div>
+
+                <div class="price-card" data-aos="fade-up" data-aos-delay="300">
+                    <h3>Enterprise</h3>
+                    <div class="amount">Custom</div>
+                    <ul class="features-list">
+                        <li><i class="fas fa-check-circle"></i> Unlimited job posts</li>
+                        <li><i class="fas fa-check-circle"></i> Full API Access</li>
+                        <li><i class="fas fa-check-circle"></i> Dedicated Account Manager</li>
+                        <li><i class="fas fa-check-circle"></i> Custom AI training</li>
+                    </ul>
+                    <a href="{{ url_for('contact') }}" class="btn-buy">Contact Sales</a>
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-links">
+                <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+                <a href="{{ url_for('terms') }}">Terms & Conditions</a>
+                <a href="{{ url_for('refund') }}">Refund & Cancellation</a>
+                <a href="{{ url_for('contact') }}">Contact Us</a>
+            </div>
+            <p class="copyright">© 2026 GoSkillNexa Pro. Secure Payments powered by Razorpay.</p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script>
+    document.getElementById('rzp-button1').onclick = function(e){
+        var options = {
+            "key": "YOUR_RAZORPAY_KEY_ID", 
+            "amount": "49900", 
+            "currency": "INR",
+            "name": "GoSkillNexa Pro",
+            "description": "Premium Employer Access",
+            "image": "https://your-logo-url.com/logo.png",
+            "handler": function (response){
+                window.location.href = "/payment_success?id=" + response.razorpay_payment_id;
+            },
+            "prefill": {
+                "name": "{{ session.user_name }}",
+                "email": "{{ session.user_email }}"
+            },
+            "theme": { "color": "#0ea5e9" }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+    }
+    </script>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script> AOS.init({ duration: 1000, once: true }); </script>
+
+</body>
+</html>

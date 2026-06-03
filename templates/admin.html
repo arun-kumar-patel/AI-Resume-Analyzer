@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoSkillNexa | Admin Control Center</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --admin-bg: #020617;
+            --card-bg: #0f172a;
+            --accent: #0ea5e9; /* Sky Blue */
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --border: #1e293b;
+        }
+
+        body {
+            background-color: var(--admin-bg);
+            color: var(--text-main);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding-top: 80px;
+        }
+
+        .admin-nav {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .stat-card:hover { 
+            border-color: var(--accent); 
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.15);
+        }
+        .stat-icon { font-size: 30px; color: var(--accent); margin-bottom: 15px; }
+
+        .analytics-wrap {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 20px;
+        }
+        .chart-filter {
+            background: #1e293b; color: var(--text-dim); border: 1px solid var(--border);
+            border-radius: 8px; padding: 5px 12px; font-size: 12px; outline: none; cursor: pointer;
+        }
+
+        .table-wrap {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 30px;
+            overflow-x: auto;
+        }
+
+        /* NEW: Export Button Styling */
+        .btn-export {
+            background: rgba(14, 165, 233, 0.1);
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            border-radius: 10px;
+            padding: 8px 15px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+        }
+        .btn-export:hover { background: var(--accent); color: white; }
+
+        .search-container { position: relative; max-width: 400px; }
+        .search-input {
+            background: #1e293b; border: 1px solid var(--border); color: white;
+            padding: 10px 15px 10px 40px; border-radius: 12px; width: 100%;
+            font-size: 14px; transition: 0.3s;
+        }
+        .search-input:focus { outline: none; border-color: var(--accent); }
+        .search-icon { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-dim); }
+
+        .table { color: var(--text-main); vertical-align: middle; border-color: var(--border); border-collapse: separate; border-spacing: 0 4px; }
+        
+        .table thead th { 
+            background-color: #bae6fd !important; 
+            color: #000000 !important; 
+            text-transform: uppercase; 
+            font-size: 13px; letter-spacing: 1px; padding: 15px 10px;
+            font-weight: 900; border: none;
+        }
+
+        .table tbody tr { transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); }
+        .table tbody tr:hover {
+            transform: translateY(-4px);
+            background-color: rgba(14, 165, 233, 0.05) !important;
+            box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.6);
+            z-index: 5; position: relative;
+        }
+
+        .table td { border-bottom: 1px solid var(--border); padding: 15px 10px; font-weight: 600; font-size: 14px; }
+
+        .status-active { color: #22c55e; background: rgba(34, 197, 94, 0.1); padding: 5px 12px; border-radius: 6px; font-size: 11px; font-weight: 800; }
+        .master-badge-red { color: #ef4444; font-weight: 800; font-size: 12px; letter-spacing: 0.5px; }
+        .badge-pro { background: linear-gradient(135deg, #f43f5e, #fb923c); color: white; padding: 5px 12px; border-radius: 8px; font-size: 11px; font-weight: 800; }
+
+        .btn-manage, .btn-protected, .btn-delete-job {
+            background: #1e293b; color: var(--text-main); border: 1px solid var(--border);
+            border-radius: 10px; padding: 6px 15px; font-size: 13px;
+            width: 115px; height: 35px; display: inline-flex; justify-content: center; align-items: center;
+            transition: 0.3s; text-decoration: none; font-weight: 700;
+        }
+        .btn-manage:hover { background: var(--accent); color: white; }
+        .btn-delete-job { color: #ef4444; }
+        .btn-delete-job:hover { background: #ef4444; color: white; }
+
+        .admin-row-sky { background: rgba(14, 165, 233, 0.08) !important; border-left: 4px solid var(--accent); }
+        .btn-protected { background: rgba(14, 165, 233, 0.1); color: var(--accent); border: 1.5px solid var(--accent); cursor: not-allowed; }
+
+        .btn-home { border: 1px solid var(--accent); color: var(--accent); text-decoration: none; padding: 5px 15px; border-radius: 8px; font-size: 14px; font-weight: 700; transition: 0.3s; }
+        h2 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+
+        /* Notes UI Design - The "Pixel Perfect" Version */
+.notes-wrap { 
+    background: var(--card-bg); 
+    border: 1px solid var(--border); 
+    border-radius: 15px;
+    padding: 12px 15px;
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+.notes-area {
+    background: rgba(30, 41, 59, 0.4); 
+    border: 1px solid var(--border); 
+    border-radius: 8px;
+    color: var(--text-main); 
+    width: 100%; 
+    flex-grow: 1; 
+    padding: 10px;
+    font-size: 13px;
+    resize: none; 
+    outline: none; 
+    transition: 0.3s;
+    line-height: 1.4;
+}
+
+.notes-area:focus { 
+    border-color: var(--accent); 
+    background: rgba(30, 41, 59, 0.6); 
+}
+
+.save-indicator { 
+    font-size: 11px; 
+    color: #22c55e; 
+    display: none; 
+    font-weight: 700; 
+    margin-left: 10px; 
+    background: rgba(34, 197, 94, 0.1);
+    padding: 2px 8px;
+    border-radius: 8px;
+}
+
+/* Modal Design */
+.modal-content { background-color: var(--card-bg) !important; border: 1px solid var(--border) !important; border-radius: 24px !important; color: white; }
+.btn-confirm-delete { background: #ef4444; color: white; border-radius: 12px; font-weight: 700; padding: 8px 20px; border: none; }
+.btn-cancel-modal { background-color: rgba(255, 255, 255, 0.05); color: var(--text-dim); border-radius: 12px; padding: 8px 20px; border: 1px solid var(--border); }
+
+/* Premium Footer Styling */
+.admin-footer {
+    margin-top: 60px;
+    padding: 40px 0;
+    border-top: 1px solid var(--border);
+    background: rgba(15, 23, 42, 0.3);
+}
+
+.footer-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+/* Updated Left Side Content */
+.footer-left-content {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.footer-brand-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.brand-logo-icon {
+    width: 36px;
+    height: 36px;
+    background: linear-gradient(135deg, var(--accent), #6366f1);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+}
+
+.footer-brand {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 800;
+    background: linear-gradient(to right, #ffffff, var(--accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.5px;
+}
+
+.footer-version {
+    background: rgba(14, 165, 233, 0.1);
+    color: var(--accent);
+    padding: 2px 10px;
+    border-radius: 6px;
+    font-size: 10px;
+    font-weight: 800;
+    border: 1px solid rgba(14, 165, 233, 0.2);
+    text-transform: uppercase;
+}
+
+.footer-tagline {
+    font-size: 11px;
+    color: var(--text-dim);
+    font-weight: 500;
+    margin-left: 48px;
+    letter-spacing: 0.3px;
+    opacity: 0.8;
+}
+
+/* Right Side: Status */
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #22c55e;
+    font-weight: 700;
+    background: rgba(34, 197, 94, 0.05);
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: 1px solid rgba(34, 197, 94, 0.1);
+}
+.pulse-dot {
+    height: 8px;
+    width: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    animation: pulse-green 2s infinite;
+}
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+}
+
+/* Premium Modal Styling */
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(2, 6, 23, 0.85); /* Deep dark overlay */
+    backdrop-filter: blur(6px);
+    z-index: 3000;
+    align-items: center; justify-content: center;
+}
+
+.message-modal {
+    background: #1e293b;
+    width: 90%; max-width: 500px;
+    border-radius: 20px;
+    padding: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    position: relative;
+    animation: modalPop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+    from { transform: scale(0.95); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Top-Right 'X' Icon */
+.modal-x-close {
+    position: absolute;
+    top: 20px; right: 20px;
+    color: #64748b;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.modal-x-close:hover { color: #f43f5e; transform: rotate(90deg); }
+
+.modal-title { color: #0ea5e9; font-size: 1.25rem; font-weight: 800; margin-bottom: 5px; }
+
+.modal-body { 
+    color: #cbd5e1; font-size: 15px; line-height: 1.7; 
+    margin: 25px 0; white-space: pre-wrap;
+    background: rgba(15, 23, 42, 0.5);
+    padding: 15px; border-radius: 12px;
+}
+
+/* Sleek Bottom Button */
+.modal-footer { display: flex; justify-content: flex-end; }
+
+.close-modal-btn {
+    background: rgba(244, 63, 94, 0.1);
+    color: #f43f5e;
+    border: 1px solid rgba(244, 63, 94, 0.2);
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.close-modal-btn:hover {
+    background: #f43f5e;
+    color: white;
+}
+
+.plan-standard-mini {
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    color: #1e293b !important;
+    text-transform: none !important;
+    display: inline-block;
+    opacity: 1 !important;
+}
+
+.badge-pro {
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    padding: 2px 0px !important;
+    text-transform: none !important;
+    color: #0ea5e9 !important;
+}
+
+.status-active {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: rgba(16, 185, 129, 0.1);
+    color: #10b981 !important;
+    padding: 2px 10px;
+    border-radius: 30px;
+    font-size: 12px;
+    font-weight: 700;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.dot-blink {
+    font-size: 10px; 
+    animation: smoothPulse 1.5s infinite ease-in-out;
+}
+
+@keyframes smoothPulse {
+    0% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.3; transform: scale(0.8); }
+    100% { opacity: 1; transform: scale(1); }
+}
+
+table {
+    width: 100% !important;
+    border-collapse: collapse;
+}
+
+.text-dim-fixed {
+    color: #94a3b8 !important;
+    font-size: 13px !important;
+    font-weight: 500;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+td, th {
+    padding: 12px 15px !important;
+    vertical-align: middle !important;
+}
+
+/* "Clear All Notes" - Balanced Version */
+.btn-outline-danger {
+    border: 1.5px solid rgba(239, 68, 68, 0.5) !important;
+    background: rgba(239, 68, 68, 0.02);
+    color: #ef4444;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.3px;
+}
+
+.btn-outline-danger:hover {
+    background: #ef4444 !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+    transform: translateY(-2px);
+}
+
+/* "Clear all notes?" - Ultra Slim & Compact Version */
+#clearNotesModal .modal-dialog {
+    max-width: 360px !important;
+    margin: 1.75rem auto;
+}
+
+#clearNotesModal .modal-content {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 15px !important;
+    padding: 0 !important;
+}
+
+#clearNotesModal .modal-body {
+    text-align: center !important;
+    padding: 15px 20px !important;
+}
+
+#clearNotesModal .modal-body i {
+    display: block !important;
+    margin: 0 auto 8px auto !important;
+    color: #ef4444;
+    font-size: 50px !important;
+}
+
+/* हेडिंग - बड़ा और सटा हुआ */
+#clearNotesModal h3 {
+    font-size: 1.5rem !important;
+    margin-bottom: 4px !important;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+#clearNotesModal p {
+    font-size: 14px !important;
+    margin-bottom: 15px !important;
+    color: #94a3b8;
+}
+
+/* --- Buttons & Hover Effects --- */
+.btn-cancel-modal, .btn-confirm-delete {
+    padding: 8px 22px !important;
+    font-size: 13px !important;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease !important;
+    border: none !important;
+}
+
+/* Cancel Button Style & Hover */
+.btn-cancel-modal {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+}
+
+.btn-cancel-modal:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+/* Delete Button Style & Hover */
+.btn-confirm-delete {
+    background: #ef4444 !important;
+    color: white !important;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+
+.btn-confirm-delete:hover {
+    background: #dc2626 !important;
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+}
+
+.custom-modal-compact {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 15px !important;
+    max-width: 350px !important;
+    margin: auto;
+}
+
+/* बड़ा और सेंटर आइकन */
+.modal-icon-large {
+    display: block !important;
+    margin: 0 auto 10px auto !important;
+    font-size: 55px !important;
+    color: #ef4444;
+}
+
+.modal-title-large {
+    font-size: 1.6rem !important;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 2px !important;
+}
+
+.modal-desc-large {
+    font-size: 15px !important;
+    color: #94a3b8;
+    margin-bottom: 12px !important;
+}
+
+/* --- Buttons & Hover Effects --- */
+.btn-cancel-modal {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: none !important;
+    color: #94a3b8 !important;
+    padding: 8px 20px !important;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel-modal:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.btn-confirm-delete {
+    background: #ef4444 !important;
+    border: none !important;
+    color: #ffffff !important;
+    padding: 8px 20px !important;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.2);
+}
+
+.btn-confirm-delete:hover {
+    background: #dc2626 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(239, 68, 68, 0.4);
+}
+
+/* पॉपअप को छोटा (Slim) करने के लिए */
+.custom-slim-modal {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 15px !important;
+    max-width: 320px !important;
+    margin: auto;
+}
+
+.custom-mini-modal {
+    background: #111827 !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    height: auto !important;
+}
+
+.custom-mini-modal .modal-body {
+    padding: 15px !important;
+}
+
+.icon-mini {
+    display: block !important;
+    margin: 0 auto 5px auto !important;
+    font-size: 40px !important;
+    color: #ef4444;
+}
+
+.title-mini {
+    font-size: 1.5rem !important;
+    font-weight: 800;
+    color: white;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.desc-mini {
+    font-size: 14px !important;
+    color: #94a3b8;
+    margin: 2px 0 12px 0 !important;
+    line-height: 1.2;
+}
+
+.btn-group-mini {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* --- Buttons & Hover Effects --- */
+.btn-c-cancel, .btn-c-delete {
+    padding: 6px 15px !important;
+    font-size: 12px !important;
+    font-weight: 700;
+    border-radius: 6px;
+    border: none;
+    transition: 0.2s ease;
+}
+
+.btn-c-cancel {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: #94a3b8 !important;
+}
+
+.btn-c-cancel:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+    color: white !important;
+}
+
+.btn-c-delete {
+    background: #ef4444 !important;
+    color: white !important;
+}
+
+.btn-c-delete:hover {
+    background: #dc2626 !important;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(239, 68, 68, 0.4);
+}
+
+/* Status Badge Styling */
+.status-suspended {
+    background: rgba(255, 193, 7, 0.15);
+    color: #ffc107;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.dot-suspended { color: #ffc107; margin-right: 4px; }
+
+.status-blocked {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+}
+.dot-blocked { color: #ef4444; margin-right: 4px; }
+    </style>
+</head>
+<body>
+
+<nav class="admin-nav">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h4 class="mb-0" style="background: linear-gradient(to right, #0ea5e9, #6366f1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-weight: 800; cursor: pointer;" onclick="location.href='/admin/dashboard'">GSN ADMIN</h4>
+        <div class="d-flex align-items-center gap-3">
+            <a href="/" class="btn-home"><i class="fas fa-home me-2"></i>View Site</a>
+            <div class="text-dim d-none d-md-block">Boss ID: <b>{{ session['user_id'] }}</b></div>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3 mb-4"><div class="stat-card text-center"><i class="fas fa-users stat-icon"></i><div class="text-dim">Total Users</div><h3>{{ users|length }}</h3></div></div>
+        <div class="col-md-3 mb-4"><div class="stat-card text-center"><i class="fas fa-briefcase stat-icon"></i><div class="text-dim">Active Jobs</div><h3>{{ jobs|length if jobs else 0 }}</h3></div></div>
+        <div class="col-md-3 mb-4">
+    <div class="stat-card text-center">
+        <i class="fas fa-headset stat-icon" style="color: #fbbf24;"></i>
+        <div class="text-dim">Support Tickets</div>
+        <h3>{{ support_messages|length if support_messages else 0 }}</h3>
+    </div>
+</div>
+        <div class="col-md-3 mb-4"><div class="stat-card text-center"><i class="fas fa-indian-rupee-sign stat-icon" style="color: #22c55e;"></i><div class="text-dim">Revenue</div><h3>₹{{ (users|selectattr('is_pro', 'true')|list|length * 299) if users else 0 }}</h3></div></div>
+    </div>
+
+    <div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="analytics-wrap">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-chart-line me-2 text-accent"></i>Platform Growth</h2>
+                <select class="chart-filter" id="timePeriod" onchange="updateChartData()">
+                    <option value="7">Last 7 Days</option>
+                    <option value="15">Last 15 Days</option>
+                    <option value="30">Last 30 Days</option>
+                </select>
+            </div>
+            <div style="height: 300px;"><canvas id="growthChart"></canvas></div>
+        </div>
+    </div>
+    <div class="col-lg-4 d-flex" style="margin-top: 15px;"> <div class="notes-wrap d-flex flex-column w-100">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="mb-0" style="font-size: 1rem; font-weight: 700;"> <i class="fas fa-sticky-note me-2 text-warning"></i>Admin Notes
+            </h2>
+            <span id="saveStatus" class="save-indicator" style="font-size: 10px; padding: 1px 6px;">
+                <i class="fas fa-check-circle me-1"></i>Saved
+            </span>
+        </div>
+        
+        <textarea id="adminScratchpad" class="notes-area flex-grow-1" placeholder="Write reminders..."></textarea>
+        
+        <div class="mt-3 text-center"> <button onclick="showClearModal()" class="btn btn-sm btn-outline-danger py-2 px-4" 
+            style="border-radius: 8px; font-weight: 600; font-size: 12px; min-width: 160px;"> 
+        <i class="fas fa-trash-alt me-2"></i> Clear All Notes
+    </button>
+</div>
+    </div>
+</div>
+
+<div class="table-wrap">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+        <h2 class="mb-3 mb-md-0"><i class="fas fa-envelope-open-text me-2 text-accent"></i>Support Inbox</h2>
+        <div class="d-flex gap-2">
+            <button onclick="exportTableToCSV('Support.csv', 'supportTable')" class="btn-export">Export</button>
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="supportSearch" class="search-input" placeholder="Search messages..." onkeyup="filterSupportTable()">
+            </div>
+        </div>
+    </div>
+    <table class="table" id="supportTable">
+        <thead>
+            <tr><th>User</th><th>Subject</th><th>Message</th><th>Date</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+    {% if support_messages %}
+        {% for msg in support_messages %}
+        <tr>
+            <td><b>{{ msg.name }}</b><br><small class="text-dim">{{ msg.email }}</small></td>
+            <td>{{ msg.subject }}</td>
+            
+            <td style="cursor: pointer; max-width: 250px;" onclick="openMsgModal('{{ msg.name }}', '{{ msg.subject }}', `{{ msg.message }}`)">
+                <div style="text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                    {{ msg.message[:40] }}...
+                </div>
+                <small style="color: #0ea5e9; font-size: 10px; font-weight: 700;">
+                    <i class="fas fa-eye"></i> View Full Message
+                </small>
+            </td>
+
+            <td class="date-cell-bold">{{ msg.timestamp.strftime('%d %b %Y | %I:%M %p') if msg.timestamp else 'N/A' }}</td>
+            <td>
+                <a href="mailto:Team GoSkillNexa <{{ msg.email }}>?subject=Regarding your inquiry&body=Hello {{ msg.name }},%0D%0A%0D%0A" class="btn-manage" style="width: auto; padding: 5px 10px;">
+                    <i class="fas fa-reply"></i> Reply
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <tr><td colspan="5" class="text-center text-dim py-5">No messages found.</td></tr>
+    {% endif %}
+</tbody>
+    </table>
+</div>
+
+    <div class="table-wrap">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+            <h2 class="mb-3 mb-md-0"><i class="fas fa-user-shield me-2 text-accent"></i>User Management</h2>
+            <div class="d-flex gap-2">
+                <button onclick="exportTableToCSV('GSN_Users.csv', 'userTable')" class="btn-export"><i class="fas fa-download me-2"></i>Export CSV</button>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="userSearch" class="search-input" placeholder="Search by email..." onkeyup="filterUserTable()">
+                </div>
+            </div>
+        </div>
+        <table class="table" id="userTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Email Address</th>
+                    <th>JOINING DATE</th>
+                    <th>Plan</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+    {% for user in users %}
+    <tr {% if user.email == 'goskillnexa@gmail.com' %} class="admin-row-sky" {% endif %}>
+        <td>
+            {% if user.email == 'goskillnexa@gmail.com' %}
+                <span class="master-badge-red"><i class="fas fa-crown me-1"></i> MASTER</span>
+            {% else %}
+                #{{ user.id }}
+            {% endif %}
+        </td>
+        
+        <td>
+            <b>{{ user.email }}</b> 
+            {% if user.email == 'goskillnexa@gmail.com' %}
+                <span class="badge bg-info ms-1" style="font-size: 9px; color: white;">YOU</span>
+            {% endif %}
+        </td>
+        
+        <td class="text-dim" style="font-size: 13px;">
+            {{ user.created_at.strftime('%d %b %Y') if user.created_at else 'N/A' }}
+        </td>
+        
+        <td>
+            {% if user.is_pro %}
+                <span class="badge-pro">Pro Match</span>
+            {% else %}
+                <span class="plan-standard-mini">Standard</span>
+            {% endif %}
+        </td>
+        
+        <td>
+            {% if user.status == 'suspended' %}
+                <span class="status-suspended"><span class="dot-suspended">●</span> Suspended</span>
+            {% elif user.status == 'blocked' %}
+                <span class="status-blocked"><span class="dot-blocked">●</span> Blocked</span>
+            {% else %}
+                <span class="status-active"><span class="dot-blink">●</span> Active</span>
+            {% endif %}
+        </td>
+        
+        <td>
+            {% if user.email == 'goskillnexa@gmail.com' %}
+                <div class="btn-protected">Protected</div>
+            {% else %}
+                <div class="dropdown">
+                    <button class="btn btn-manage dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-cog me-1"></i> Manage
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end shadow-lg border-0" style="border-radius: 12px; background: #1e293b;">
+    <li>
+        <a class="dropdown-item py-2 text-success" href="javascript:void(0)" 
+           onclick="confirmAction(event, '{{ url_for('set_user_status', user_id=user.id, new_status='active') }}', 'Activate')">
+            <i class="fas fa-check-circle me-2"></i>Activate
+        </a>
+    </li>
+
+    <li>
+        <a class="dropdown-item py-2 text-warning" href="javascript:void(0)" 
+           onclick="confirmAction(event, '{{ url_for('set_user_status', user_id=user.id, new_status='suspended') }}', 'Suspend')">
+            <i class="fas fa-pause-circle me-2"></i>Suspend
+        </a>
+    </li>
+
+    <li>
+        <a class="dropdown-item py-2 text-danger" href="javascript:void(0)" 
+           onclick="confirmAction(event, '{{ url_for('set_user_status', user_id=user.id, new_status='blocked') }}', 'Block')">
+            <i class="fas fa-ban me-2"></i>Block
+        </a>
+    </li>
+
+    <li><hr class="dropdown-divider" style="border-color: rgba(255,255,255,0.1);"></li>
+
+    <li>
+        <a class="dropdown-item py-2 text-white" style="background: rgba(239, 68, 68, 0.2);" href="javascript:void(0)" 
+           onclick="confirmAction(event, '{{ url_for('delete_user', user_id=user.id) }}', 'Permanently DELETE')">
+            <i class="fas fa-user-slash me-2"></i>Delete User
+        </a>
+    </li>
+</ul>
+            {% endif %}
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+        </table>
+    </div>
+
+    <div class="table-wrap mb-5">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center mb-4">
+            <h2 class="mb-3 mb-md-0"><i class="fas fa-briefcase me-2 text-accent"></i>Active Listings</h2>
+            <div class="d-flex gap-2">
+                <button onclick="exportTableToCSV('GSN_Jobs.csv', 'jobTable')" class="btn-export"><i class="fas fa-download me-2"></i>Export CSV</button>
+                <div class="search-container">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" id="jobSearch" class="search-input" placeholder="Search jobs..." onkeyup="filterJobTable()">
+                </div>
+            </div>
+        </div>
+        <table class="table" id="jobTable">
+            <thead>
+                <tr>
+                    <th>Job Title</th>
+                    <th>Company</th>
+                    <th>Location</th>
+                    <th>Type</th>
+                    <th>Posted On</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if jobs %}
+                    {% for job in jobs %}
+                    <tr>
+                        <td class="fw-bold">{{ job.job_title }}</td>
+                        <td><i class="fas fa-building me-1 text-dim"></i> {{ job.company_name }}</td>
+                        <td><i class="fas fa-location-dot me-1 text-accent"></i> {{ job.location }}</td>
+                        <td class="fw-bold">{{ job.job_type }}</td>
+                        <td class="text-dim" style="font-size: 12px;">{{ job.posted_on }}</td>
+                        <td><span class="status-active"><span class="dot-blink">●</span> Active</span></td>
+                        <td>
+                            <a href="javascript:void(0)" 
+   class="btn-delete-job text-decoration-none" 
+   onclick="confirmDeleteJob(event, '{{ url_for('admin_delete_job', job_id=job.id) }}', '{{ job.job_title }}')">
+    <i class="fas fa-trash-can me-1"></i> Delete
+</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr><td colspan="7" class="text-center text-dim py-5">No jobs found.</td></tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<footer class="admin-footer">
+    <div class="container">
+        <div class="footer-flex">
+            <div class="footer-left-content">
+                <div class="footer-brand-wrap">
+                    <div class="brand-logo-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <div>
+                        <span class="footer-brand">GoSkillNexa</span>
+                        <span class="footer-version">v2.4.0</span>
+                    </div>
+                </div>
+                <div class="footer-tagline">Advanced Career Intelligence Engine</div>
+            </div>
+
+            <div class="footer-credit">
+                &copy; 2026 Resume Analyzer by GoSkillNexa. All rights reserved. <i class="fas fa-heart text-danger mx-1"></i> by 
+                <span style="color: var(--text-main); font-weight: 700;">Admin</span>
+            </div>
+
+            <div class="status-indicator">
+                <div class="pulse-dot"></div>
+                System Operational
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script>
+    let growthChart;
+
+    document.addEventListener('DOMContentLoaded', function() {
+        
+        initChart('7');
+
+        const scratchpad = document.getElementById('adminScratchpad');
+        const status = document.getElementById('saveStatus');
+        
+        const savedData = localStorage.getItem('gsn_admin_notes');
+        if (savedData && scratchpad) scratchpad.value = savedData;
+
+        if (scratchpad) {
+            scratchpad.addEventListener('input', function() {
+                localStorage.setItem('gsn_admin_notes', scratchpad.value);
+                status.style.display = 'inline';
+                setTimeout(() => { status.style.display = 'none'; }, 1000);
+            });
+        }
+    });
+
+    // --- GROWTH CHART LOGIC (FIXED) ---
+    function initChart(period) {
+        const chartCanvas = document.getElementById('growthChart');
+        if (!chartCanvas) return;
+
+        const ctx = chartCanvas.getContext('2d');
+        
+        const chartData = {
+            '7': { labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], users: [10, 25, 15, 30, 20, 45, 60], jobs: [5, 12, 8, 15, 10, 20, 25] },
+            '15': { labels: Array.from({length: 15}, (_, i) => i + 1), users: [10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80], jobs: [5, 8, 12, 15, 18, 20, 22, 25, 28, 30, 32, 35, 38, 40, 45] },
+            '30': { labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'], users: [100, 250, 450, 700], jobs: [50, 150, 250, 400] }
+        };
+
+        if (growthChart) growthChart.destroy();
+
+        growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: chartData[period].labels,
+                datasets: [
+                    { label: 'New Users', data: chartData[period].users, borderColor: '#0ea5e9', backgroundColor: 'rgba(14, 165, 233, 0.1)', fill: true, tension: 0.4, borderWidth: 3 },
+                    { label: 'Jobs Posted', data: chartData[period].jobs, borderColor: '#6366f1', backgroundColor: 'rgba(99, 102, 241, 0.1)', fill: true, tension: 0.4, borderWidth: 3 }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { labels: { color: '#94a3b8', font: { family: 'Plus Jakarta Sans', weight: '700' } } } },
+                scales: {
+                    y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } },
+                    x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                }
+            }
+        });
+    }
+
+    function updateChartData() {
+        const period = document.getElementById("timePeriod").value;
+        initChart(period);
+    }
+
+    // --- POPUP / MODAL ACTIONS ---
+    function showClearModal() { 
+        const modalEl = document.getElementById('clearNotesModal');
+        const notesModal = new bootstrap.Modal(modalEl);
+        notesModal.show(); 
+    }
+
+    function confirmClearNotes() {
+        const scratchpad = document.getElementById('adminScratchpad');
+        if (scratchpad) scratchpad.value = '';
+        localStorage.removeItem('gsn_admin_notes');
+        
+        const modalEl = document.getElementById('clearNotesModal');
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) modalInstance.hide();
+    }
+
+    // --- CSV EXPORT LOGIC ---
+    function exportTableToCSV(filename, tableId) {
+        let csv = [];
+        let rows = document.querySelectorAll("#" + tableId + " tr");
+        for (let i = 0; i < rows.length; i++) {
+            let row = [], cols = rows[i].querySelectorAll("td, th");
+            for (let j = 0; j < cols.length - 1; j++) {
+                let data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, "").replace(/(\s\s)/gm, " ");
+                row.push('"' + data.replace(/"/g, '""') + '"');
+            }
+            csv.push(row.join(","));
+        }
+        let link = document.createElement("a");
+        link.download = filename;
+        link.href = window.URL.createObjectURL(new Blob([csv.join("\n")], {type: "text/csv"}));
+        link.click();
+    }
+
+    // --- LIVE SEARCH LOGIC ---
+    function filterUserTable() {
+        let input = document.getElementById("userSearch").value.toLowerCase();
+        let rows = document.querySelector("#userTable tbody").rows;
+        for (let row of rows) {
+            let text = row.cells[0].textContent + " " + row.cells[1].textContent;
+            row.style.display = text.toLowerCase().includes(input) ? "" : "none";
+        }
+    }
+
+    function filterJobTable() {
+        let input = document.getElementById("jobSearch").value.toLowerCase();
+        let rows = document.querySelector("#jobTable tbody").rows;
+        for (let row of rows) {
+            let text = row.cells[0].textContent + " " + row.cells[1].textContent + " " + row.cells[2].textContent;
+            row.style.display = text.toLowerCase().includes(input) ? "" : "none";
+        }
+    }
+
+    // Function to Search Support Table
+function filterSupportTable() {
+    let input = document.getElementById("supportSearch").value.toLowerCase();
+    let rows = document.querySelector("#supportTable tbody").rows;
+    for (let row of rows) {
+        row.style.display = row.innerText.toLowerCase().includes(input) ? "" : "none";
+    }
+}
+
+function openMsgModal(name, subject, message) {
+    document.getElementById('modalName').innerText = "From: " + name;
+    document.getElementById('modalSubject').innerText = subject;
+    document.getElementById('modalFullMessage').innerText = message;
+    document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+function closeMsgModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+}
+
+window.onclick = function(event) {
+    let overlay = document.getElementById('modalOverlay');
+    if (event.target == overlay) closeMsgModal();
+}
+
+function confirmAction(event, url, actionName) {
+    event.preventDefault();
+
+    let btnColor = '#3085d6'; // Default Blue
+    if (actionName.toLowerCase().includes('delete') || actionName.toLowerCase().includes('block')) {
+        btnColor = '#d33'; // Red for danger actions
+    }
+
+    Swal.fire({
+        title: 'Are you sure?',
+        text: `Do you really want to ${actionName} this user?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: btnColor,
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: `Yes, ${actionName}!`,
+        background: '#1e293b',
+        color: '#fff',
+        iconColor: '#f8bb86'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem('scrollpos', window.scrollY);
+            window.location.href = url;
+        }
+    });
+}
+
+function confirmDeleteJob(event, url, jobTitle) {
+    event.preventDefault();
+
+    Swal.fire({
+        title: 'Delete Job Listing?',
+        text: `Are you sure you want to permanently delete the "${jobTitle}" position?`,
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Yes, Delete it!',
+        background: '#1e293b',
+        color: '#fff',
+        iconColor: '#f27474'
+    }).then((result) => {
+        if (result.isConfirmed) {
+            localStorage.setItem('scrollpos', window.scrollY);
+            window.location.href = url;
+        }
+    });
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) {
+            window.scrollTo(0, scrollpos);
+            localStorage.removeItem('scrollpos');
+        }
+    });
+
+    window.onbeforeunload = function(e) {
+        localStorage.setItem('scrollpos', window.scrollY);
+    };
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<div class="modal fade" id="clearNotesModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width: 320px;">
+        <div class="modal-content custom-mini-modal">
+            <div class="modal-body text-center">
+                <i class="fas fa-trash-alt icon-mini"></i>
+                <h3 class="title-mini">Are you sure?</h3>
+                <h3 class="title-mini">Clear all notes</h3>
+                <p class="desc-mini">This action is permanent and cannot be undone.</p>
+                
+                <div class="btn-group-mini">
+                    <button class="btn-c-cancel" data-bs-dismiss="modal">Cancel</button>
+                    <button class="btn-c-delete" onclick="confirmClearNotes()">Delete All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="modalOverlay">
+    <div class="message-modal">
+        <i class="fas fa-times modal-x-close" onclick="closeMsgModal()"></i>
+        
+        <h4 id="modalSubject" class="modal-title">Subject</h4>
+        <small id="modalName" style="color: #94a3b8; font-weight: 600;"></small>
+        
+        <div class="modal-body" id="modalFullMessage"></div>
+        
+        <div class="modal-footer">
+            <button class="close-modal-btn" onclick="closeMsgModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

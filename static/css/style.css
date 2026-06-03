@@ -1,0 +1,318 @@
+/* === GoSkillNexa: Central Stylesheet === */
+
+/* --- 1. Global Variables & Basic Setup --- */
+:root {
+  --primary-dark: #111439;
+  --primary-accent: #00FFFF; /* Electric Blue Accent */
+  --text-light: #F8F8F9;
+  --text-dark: #333;
+  --text-secondary: #555;
+  --bg-light: #FFFFFF;
+  --bg-secondary: #F8F8F9;
+  --font-heading: 'Poppins', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --shadow: 0 8px 24px rgba(17, 20, 57, 0.08);
+  --border-color: #e0e0e0;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background-color: var(--bg-light);
+  color: var(--text-dark);
+  line-height: 1.6;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* --- 2. Header & Navigation --- */
+header {
+  background-color: var(--bg-light);
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border-color);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+nav { 
+  display: flex; 
+  justify-content: space-between; 
+  align-items: center; 
+  flex-wrap: wrap;
+}
+.logo { 
+  font-family: var(--font-heading); 
+  font-size: 24px; 
+  font-weight: 700; 
+  color: var(--primary-dark); 
+  text-decoration: none; 
+}
+.logo span { 
+  color: var(--primary-accent); 
+}
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.nav-links a {
+  color: var(--text-dark);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+.nav-links a:hover {
+  color: var(--primary-accent);
+}
+.nav-links .signup-link {
+  color: var(--primary-accent);
+  font-weight: 600;
+}
+
+/* --- 3. Hero Section --- */
+.hero {
+  background-color: var(--primary-dark);
+  color: var(--text-light);
+  padding: 120px 0;
+  text-align: center;
+}
+.hero h1 {
+  font-family: var(--font-heading);
+  font-size: 56px;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+.hero h1 span {
+  color: var(--primary-accent);
+}
+.hero p {
+  font-size: 20px;
+  max-width: 650px;
+  margin: 0 auto 40px auto;
+  opacity: 0.9;
+}
+.hero-cta {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.btn {
+  padding: 15px 35px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+.cta-primary {
+  background-color: var(--primary-accent);
+  color: var(--primary-dark);
+}
+.cta-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(0, 255, 255, 0.2);
+}
+.cta-secondary {
+  background-color: transparent;
+  color: var(--text-light);
+  border: 2px solid var(--primary-accent);
+}
+.cta-secondary:hover {
+  background-color: var(--primary-accent);
+  color: var(--primary-dark);
+}
+
+/* --- 4. General Section Styling --- */
+section {
+  padding: 80px 0;
+}
+.section-title {
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: 42px;
+  margin-bottom: 15px;
+  color: var(--primary-dark);
+}
+.section-subtitle {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 60px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  color: #666;
+}
+
+/* --- 5. Features Section --- */
+.features-grid {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+.feature-box {
+  background: var(--bg-light);
+  padding: 40px 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-basis: 300px;
+}
+.feature-box:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 12px 32px rgba(17, 20, 57, 0.12);
+}
+.feature-box .icon {
+  font-size: 48px;
+  color: var(--primary-accent);
+  margin-bottom: 20px;
+}
+.feature-box h3 {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+
+/* --- 6. Testimonial Section --- */
+.testimonial {
+  background-color: var(--bg-secondary);
+}
+.testimonial-grid {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.testimonial-card {
+  background: var(--bg-light);
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  flex-basis: 45%;
+}
+.testimonial-card p {
+  font-style: italic;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+.testimonial-card strong {
+  font-weight: 600;
+  color: var(--primary-dark);
+}
+
+/* --- 7. Counters Section --- */
+.counters {
+  background-color: var(--primary-dark);
+  color: var(--text-light);
+  padding: 60px 0;
+}
+.counters-grid {
+  display: flex;
+  justify-content: space-around;
+  text-align: center;
+  flex-wrap: wrap;
+}
+.counter {
+  font-family: var(--font-heading);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--primary-accent);
+}
+.counter-label {
+  font-size: 18px;
+  opacity: 0.8;
+}
+
+/* --- 8. Footer --- */
+footer {
+  background-color: #0A0C26;
+  color: var(--text-light);
+  padding: 60px 0 20px 0;
+}
+.footer-grid {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+.footer-col {
+  flex: 1;
+  min-width: 200px;
+}
+.footer-col h4 {
+  font-family: var(--font-heading);
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: var(--primary-accent);
+}
+.footer-col ul {
+  list-style: none;
+  padding: 0;
+}
+.footer-col ul li {
+  margin-bottom: 12px;
+}
+.footer-col ul li a {
+  color: #ccc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+.footer-col ul li a:hover {
+  color: var(--text-light);
+}
+.social-icons a {
+  color: #ccc;
+  font-size: 20px;
+  margin-right: 15px;
+  transition: color 0.3s ease;
+}
+.social-icons a:hover {
+  color: var(--primary-accent);
+}
+.footer-bottom {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid #333;
+  font-size: 14px;
+  color: #aaa;
+}
+
+/* --- 9. Responsive Design --- */
+@media (max-width: 992px) {
+  .nav-links {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  nav {
+    flex-direction: column;
+    gap: 15px;
+  }
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  .hero h1 {
+    font-size: 42px;
+  }
+  .hero p {
+    font-size: 18px;
+  }
+  .section-title {
+    font-size: 36px;
+  }
+  .footer-grid {
+    flex-direction: column;
+    text-align: center;
+  }
+}

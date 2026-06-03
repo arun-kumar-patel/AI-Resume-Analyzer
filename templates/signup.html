@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - GoSkillNexa</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+    <style>
+        :root {
+            --page-bg-dark: #111439;
+            --page-bg-darker: #0A0C26;
+            --page-bg-lighter: #161a48;
+            --page-bg-blue: #002b5c;
+            --primary-accent: #00FFFF;
+            --text-light: #F8F8F9;
+            --card-bg: #e0e0e0;
+            --card-text: #444;
+            --card-shadow-dark: #bebebe;
+            --card-shadow-light: #ffffff;
+            --error-red: #c62828;
+            --font-heading: 'Poppins', sans-serif;
+            --font-body: 'Inter', sans-serif;
+        }
+        body {
+            margin: 0;
+            font-family: var(--font-body);
+            color: var(--text-light); 
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(-45deg, var(--page-bg-dark), var(--page-bg-darker), var(--page-bg-lighter), var(--page-bg-blue));
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            width: 100%;
+        }
+        .signup-container {
+            max-width: 400px;
+            width: 100%;
+            padding: 40px;
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 15px 15px 30px rgba(0,0,0,0.3), -15px -15px 30px rgba(255,255,255,0.05);
+        }
+        .signup-container h2 {
+            font-family: var(--font-heading);
+            font-size: 28px;
+            color: var(--card-text);
+            text-align: center;
+            margin: 0 0 30px 0;
+            font-weight: 600;
+        }
+        .input-group {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            outline: none;
+            border-radius: 15px;
+            font-size: 16px;
+            box-sizing: border-box;
+            background: var(--card-bg);
+            color: var(--card-text);
+            box-shadow: inset 7px 7px 15px var(--card-shadow-dark), inset -7px -7px 15px var(--card-shadow-light);
+        }
+        .input-field::placeholder { color: #999; }
+        .toggle-password {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+        }
+        .signup-btn {
+            width: 100%;
+            padding: 16px;
+            background: var(--card-bg);
+            color: var(--card-text);
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            box-shadow: 7px 7px 15px var(--card-shadow-dark), -7px -7px 15px var(--card-shadow-light);
+            margin-top: 10px;
+        }
+        .signup-btn:hover {
+            color: var(--primary-accent);
+            box-shadow: 5px 5px 10px var(--card-shadow-dark), -5px -5px 10px var(--card-shadow-light);
+        }
+        .links-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .links-container a {
+            color: var(--card-text);
+            text-decoration: none;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+        .links-container a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+        /* Flash message style */
+        .flash-message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .flash-message.error {
+            background-color: #ffcdd2;
+            color: var(--error-red);
+        }
+        .flash-message.success {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="signup-container">
+        <h2>Create Account</h2>
+
+        <!-- Flash messages yahan dikhayein -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash-message {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="input-group">
+                <!-- === DATA PRE-FILL LOGIC YAHAN JODA GAYA HAI === -->
+                <input type="text" name="fullName" placeholder="Full Name" class="input-field" value="{{ full_name or '' }}" required>
+            </div>
+            <div class="input-group">
+                <input type="email" name="email" placeholder="Email Address" class="input-field" value="{{ email or '' }}" required>
+            </div>
+            <div class="input-group">
+                <input type="password" name="password" id="password" placeholder="Password" class="input-field" required>
+                <i class="fas fa-eye toggle-password" id="togglePassword"></i>
+            </div>
+            <div class="input-group">
+                <input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" class="input-field" required>
+                <i class="fas fa-eye toggle-password" id="toggleConfirmPassword"></i>
+            </div>
+            <button type="submit" class="signup-btn">Sign Up</button>
+        </form>
+        <div class="links-container">
+            <a href="{{ url_for('login') }}">Already have an account? Login</a>
+        </div>
+    </div>
+</main>
+
+<script>
+    function setupPasswordToggle(toggleId, passwordId) {
+        const toggle = document.getElementById(toggleId);
+        const password = document.getElementById(passwordId);
+        if (toggle && password) {
+            toggle.addEventListener('click', function () {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+        }
+    }
+    setupPasswordToggle('togglePassword', 'password');
+    setupPasswordToggle('toggleConfirmPassword', 'confirmPassword');
+</script>
+
+</body>
+</html>

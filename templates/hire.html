@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hire Talent - GoSkillNexa Pro</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1, #f43f5e);
+            --navy-deep: #030712; 
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --slate-300: #cbd5e1;
+            --slate-500: #64748b;
+            --white: #ffffff;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--white); color: var(--navy-deep); line-height: 1.6; overflow-x: hidden; display: flex; flex-direction: column; min-height: 100vh; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10, 25, 47, 0.98); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding: 14px 0;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 50px; }
+        
+        .logo { 
+            font-size: 28px; font-weight: 800; text-decoration: none; display: flex; align-items: center; gap: 10px; font-family: var(--font-display); 
+            background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1.5px;
+        }
+        .logo i { background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 30px; } 
+
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links a { color: var(--slate-300); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--white); }
+        
+        .btn-portal { 
+            background: var(--brand-gradient); color: white !important; padding: 11px 26px; border-radius: 6px; font-weight: 700; 
+            text-decoration: none; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        }
+        .btn-portal:hover { transform: scale(1.05); box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4); }
+
+        .hire-hero { padding: 180px 0 60px; text-align: center; background: #fff; }
+        .hire-hero h1 { font-family: var(--font-display); font-size: 52px; font-weight: 800; letter-spacing: -2px; margin-bottom: 15px; }
+        .hire-hero h1 span { background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hire-hero p { color: var(--slate-500); font-size: 20px; max-width: 700px; margin: 0 auto; }
+
+        .pricing-section { padding: 60px 0 120px; background: #fff; }
+        .plans-wrap { display: flex; justify-content: center; gap: 40px; flex-wrap: wrap; }
+        
+        .plan-card { 
+            background: white; border: 1px solid #e2e8f0; padding: 60px 45px; border-radius: 28px; 
+            width: 100%; max-width: 380px; position: relative;
+            display: flex; flex-direction: column;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .plan-card:hover { 
+            border-color: var(--brand-primary); 
+            box-shadow: 0 20px 40px rgba(14, 165, 233, 0.1); 
+        }
+        
+        .plan-card.featured { border: 2.5px solid var(--brand-primary); background: #f0f9ff; }
+        .pop-badge { position: absolute; top: 25px; right: 25px; background: var(--brand-gradient); color: white; padding: 5px 15px; border-radius: 100px; font-size: 11px; font-weight: 800; text-transform: uppercase; }
+
+        .plan-title { font-size: 18px; font-weight: 800; color: var(--slate-500); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        .plan-price { font-family: var(--font-display); font-size: 56px; font-weight: 800; color: var(--navy-deep); margin-bottom: 30px; }
+        .plan-price span { font-size: 18px; color: var(--slate-500); font-weight: 500; }
+
+        .plan-features { list-style: none; margin-bottom: 40px; flex-grow: 1; }
+        .plan-features li { margin-bottom: 18px; color: #1e293b; display: flex; align-items: center; gap: 15px; font-size: 15px; font-weight: 500; }
+        .plan-features li i { color: var(--brand-primary); font-size: 18px; }
+
+        .plan-btn { 
+            display: block; text-align: center; padding: 18px; border-radius: 14px; font-weight: 700; 
+            text-decoration: none; font-size: 17px; background: var(--navy-navbar); color: white;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: none; cursor: pointer; width: 100%;
+        }
+        .plan-btn:hover { 
+            background: var(--brand-primary); 
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.4); 
+            color: white;
+        }
+
+        footer { background: #010409; padding: 40px 0; border-top: 1px solid rgba(255,255,255,0.05); color: #94a3b8; }
+        .footer-bottom { text-align: center; font-size: 13px; }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            .nav-links { display: none; } /* Mobile simplicity */
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="{{ url_for('home') }}" class="logo"><i class="fas fa-layer-group"></i> GoSkillNexa</a>
+        <div class="nav-links">
+            <a href="{{ url_for('home') }}#features">Features</a>
+            <a href="{{ url_for('search') }}">Search Jobs</a>
+            <a href="{{ url_for('about') }}">Platform</a>
+            {% if session.user_id %}
+                <a href="{{ url_for('dashboard') }}" class="btn-portal">Dashboard</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn-portal">Join Now</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main>
+    <section class="hire-hero">
+        <div class="container">
+            <h1>Scale Your Team with <span>AI Precision.</span></h1>
+            <p>Empowering recruiters with the next-gen AI matching engine.</p>
+        </div>
+    </section>
+
+    <section class="pricing-section">
+        <div class="container">
+            <div class="plans-wrap">
+                <div class="plan-card">
+                    <div class="plan-title">Standard</div>
+                    <div class="plan-price">₹0 <span>/ Free</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check-circle"></i> Post up to <b>2 active jobs</b></li>
+                        <li><i class="fas fa-check-circle"></i> Basic AI Matching</li>
+                    </ul>
+                    <a href="{{ url_for('post_job') }}" class="plan-btn" style="background: var(--slate-500);">Start for Free</a>
+                </div>
+
+                <div class="plan-card featured">
+                    <div class="pop-badge">Most Popular</div>
+                    <div class="plan-title">Pro Match</div>
+                    <div class="plan-price">₹299 <span>/ month</span></div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check-circle"></i> Post up to <b>10 active jobs</b></li>
+                        <li><i class="fas fa-check-circle"></i> Advanced AI Resume Matching</li>
+                        <li><i class="fas fa-check-circle"></i> Priority Email Support</li>
+                    </ul>
+                    <button onclick="buyPlan('pro')" class="plan-btn">Upgrade to Pro</button>
+                </div>
+
+                <div class="plan-card">
+                    <div class="plan-title">Enterprise</div>
+                    <div class="plan-price">Custom</div>
+                    <ul class="plan-features">
+                        <li><i class="fas fa-check-circle"></i> <b>Unlimited</b> Job Postings</li>
+                        <li><i class="fas fa-check-circle"></i> Personal Account Manager</li>
+                    </ul>
+                    <a href="mailto:support@goskillnexa.com" class="plan-btn" style="background: #000;">Contact Us</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="container">
+        <div class="footer-bottom">
+            <p>© 2026 Resume Analyzer by GoSkillNexa. All rights reserved.</p>
+        </div>
+    </div>
+</footer>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+function buyPlan(planType) {
+    fetch('/create_order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ plan: planType }),
+        credentials: 'include' 
+    })
+    .then(res => res.json())
+    .then(order => {
+        var options = {
+            "key": "rzp_test_SSqFjmH1mZG1is",
+            "amount": order.amount,
+            "currency": "INR",
+            "name": "GoSkillNexa Pro",
+            "order_id": order.id,
+            "handler": function (response){
+                window.location.href = `/payment_success?id=${response.razorpay_payment_id}`;
+            },
+            "theme": { "color": "#0ea5e9" }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    })
+    .catch(err => alert("Error: " + err));
+}
+</script>
+
+</body>
+</html>

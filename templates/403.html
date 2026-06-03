@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>403 - Restricted Zone | GoSkillNexa</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3b82f6;
+            --danger: #ef4444;
+            --warning: #facc15; 
+            --bg: #0f172a;
+        }
+
+        body {
+            margin: 0;
+            background-color: var(--bg);
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Neon Background Effect */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: var(--danger);
+            filter: blur(150px);
+            opacity: 0.15;
+            top: 20%;
+            left: 30%;
+            z-index: -1;
+        }
+
+        .error-card {
+            text-align: center;
+            background: rgba(30, 41, 59, 0.4);
+            padding: 60px 40px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+            max-width: 550px;
+            width: 90%;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .shield-box {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 30px;
+        }
+
+        .main-icon {
+            font-size: 90px;
+            color: var(--danger);
+            filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5));
+            animation: shieldPulse 2s infinite ease-in-out;
+        }
+
+        h1 {
+            font-size: 120px;
+            margin: 0;
+            font-weight: 900;
+            letter-spacing: -5px;
+            background: linear-gradient(to bottom, #fff 30%, #64748b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 0.8;
+        }
+
+        .status-text {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #f8fafc;
+        }
+
+        .message {
+            color: #94a3b8;
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* 🛑 Username Styling Updates */
+        .user-highlight {
+            color: var(--warning); 
+            font-weight: 800;
+            text-decoration: none; 
+        }
+
+        .btn-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: #fff;
+            color: #0f172a;
+            text-decoration: none;
+            padding: 14px 35px;
+            border-radius: 14px;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-home:hover {
+            transform: translateY(-4px) scale(1.02);
+            box-shadow: 0 15px 30px rgba(255, 255, 255, 0.15);
+            background: var(--primary);
+            color: #fff;
+        }
+
+        @keyframes shieldPulse {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(239, 68, 68, 0.5)); }
+            50= { transform: scale(1.05); filter: drop-shadow(0 0 30px rgba(239, 68, 68, 0.8)); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="error-card">
+        <div class="shield-box">
+            <i class="fas fa-user-lock main-icon"></i>
+        </div>
+        <h1>403</h1>
+        <div class="status-text">Access Denied</div>
+        
+        <p class="message">
+            Sorry, <span class="user-highlight">{{ name }}</span> ! You do not have the administrative clearance required to enter this sector. This attempt has been logged.
+        </p>
+        
+        <a href="{{ url_for('home') }}" class="btn-home">
+            <i class="fas fa-home"></i> Back to Home
+        </a>
+    </div>
+
+</body>
+</html>

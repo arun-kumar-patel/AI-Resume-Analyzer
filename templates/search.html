@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Search Jobs - GoSkillNexa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root {
+      --primary-dark: #111439;
+      --primary-accent: #00FFFF;
+      --text-light: #F8F8F9;
+      --text-dark: #333;
+      --bg-light: #FFFFFF;
+      --bg-secondary: #F8F8F9;
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --shadow: 0 8px 24px rgba(17, 20, 57, 0.08);
+      --border-color: #e0e0e0;
+    }
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background-color: var(--bg-secondary);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+    header {
+      background-color: var(--bg-light);
+      padding: 18px 0;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    nav { 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+    }
+    .logo { 
+      font-family: var(--font-heading); 
+      font-size: 26px; 
+      font-weight: 700; 
+      color: var(--primary-dark); 
+      text-decoration: none;
+      letter-spacing: -0.5px;
+    }
+    .logo span { color: var(--primary-accent); }
+    
+    .nav-links { 
+      display: flex; 
+      align-items: center; 
+      gap: 30px; 
+    }
+    .nav-links a { 
+      color: var(--text-dark); 
+      text-decoration: none; 
+      font-weight: 600; 
+      font-size: 15px;
+      transition: all 0.3s ease; 
+    }
+    .nav-links a:hover { color: var(--primary-accent); }
+    .nav-links .signup-link { 
+        background: var(--primary-dark);
+        color: white;
+        padding: 10px 20px;
+        border-radius: 10px;
+    }
+    .nav-links .signup-link:hover {
+        background: var(--primary-accent);
+        color: var(--primary-dark);
+    }
+
+    .search-page-layout {
+        display: flex;
+        gap: 30px;
+        padding: 40px 0;
+        align-items: flex-start;
+    }
+    .filters-column {
+        flex: 0 0 320px;
+        background-color: var(--bg-light);
+        padding: 30px;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        height: fit-content;
+        border: 1px solid var(--border-color);
+    }
+    .filters-column h2 { font-family: var(--font-heading); font-size: 24px; margin-top: 0; margin-bottom: 25px; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+    .filter-group { margin-bottom: 22px; }
+    .filter-group label { display: block; font-weight: 600; margin-bottom: 10px; font-size: 16px; }
+    .input-field, .select-field { width: 100%; padding: 12px 15px; border: 1px solid #ccc; border-radius: 8px; font-size: 16px; box-sizing: border-box; transition: border-color 0.3s ease, box-shadow 0.3s ease; }
+    .input-field:focus, .select-field:focus { outline: none; border-color: var(--primary-accent); box-shadow: 0 0 0 3px rgba(0, 255, 255, 0.2); }
+    .search-btn { width: 100%; padding: 14px; background: linear-gradient(90deg, var(--primary-dark), #24285e); color: var(--text-light); border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 10px; }
+    .search-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(17, 20, 57, 0.2); }
+    #error-message { color: #c62828; font-weight: 500; margin-top: 15px; text-align: center; display: none; }
+    .results-column { flex: 1; }
+    .results-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+    .results-header h2 { font-family: var(--font-heading); font-size: 28px; margin: 0; color: var(--primary-dark); }
+    #results-count { font-size: 16px; color: #555; font-weight: 500; }
+    #results-container { display: flex; flex-direction: column; gap: 15px; }
+    .placeholder-text {
+        background-color: var(--bg-light);
+        padding: 60px 30px;
+        text-align: center;
+        border-radius: 16px;
+        border: 2px dashed var(--border-color);
+    }
+    .placeholder-text i { font-size: 48px; color: var(--primary-accent); margin-bottom: 20px; }
+    .placeholder-text p { font-size: 18px; color: #666; }
+    .job-card {
+        background-color: var(--bg-light);
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .job-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 32px rgba(17, 20, 57, 0.1);
+    }
+    .card-content { display: flex; align-items: center; gap: 15px; }
+    .platform-logo { 
+        width: 65px; 
+        height: 65px; 
+        border-radius: 12px; 
+        object-fit: cover; /* Changed to cover for user profile pics */
+        padding: 4px;
+        border: 1px solid #f0f0f0;
+        background-color: white;
+    }
+    .job-details h3 { font-size: 18px; margin: 0 0 2px 0; color: var(--primary-dark); }
+    .job-details p { margin: 0; color: #555; font-size: 14px; }
+    .view-btn { padding: 10px 25px; background-color: var(--primary-dark); color: var(--text-light); text-decoration: none; border-radius: 8px; font-weight: 600; transition: all 0.3s ease; white-space: nowrap; }
+    .view-btn:hover { background-color: var(--primary-accent); color: var(--primary-dark); }
+    footer { background-color: #0A0C26; color: #aaa; text-align: center; padding: 20px 0; font-size: 14px; margin-top: 40px; }
+    @media (max-width: 992px) {
+        .nav-links { display: none; }
+        .search-page-layout { flex-direction: column; }
+        .filters-column { flex: 1; width: 100%; box-sizing: border-box; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/upload">Upload</a>
+        <a href="/login">Login</a>
+        <a href="/signup" class="signup-link">Sign Up</a>
+      </div>
+    </nav>
+  </div>
+</header>
+<div class="container search-page-layout">
+    <aside class="filters-column">
+        <h2><i class="fas fa-filter"></i> Find Your Job</h2>
+        <div class="filter-group">
+            <label for="keyword">Job Role / Title</label>
+            <input type="text" id="keyword" class="input-field" placeholder="e.g., Python Developer" value="{{ search_keyword }}">
+        </div>
+        <div class="filter-group">
+            <label for="location">Location</label>
+            <input type="text" id="location" class="input-field" placeholder="e.g., Mumbai" value="{{ search_location }}">
+        </div>
+        <div class="filter-group">
+            <label for="workStyle">Work Style</label>
+            <select id="workStyle" class="select-field">
+                <option value="any">Any Work Style</option>
+                <option value="On-site">On-site</option>
+                <option value="Remote">Remote</option>
+                <option value="Hybrid">Hybrid</option>
+            </select>
+        </div>
+        <div class="filter-group">
+            <label for="datePosted">Date Posted</label>
+            <select id="datePosted" class="select-field">
+                <option value="any">Any Time</option>
+                <option value="day">Past 24 hours</option>
+                <option value="week">Past week</option>
+                <option value="month">Past month</option>
+            </select>
+        </div>
+        <button class="search-btn" onclick="handleSearch()"><i class="fas fa-search"></i> Find Jobs</button>
+        <p id="error-message">Please enter a Job Role.</p>
+    </aside>
+    <main class="results-column">
+        <div class="results-header">
+            <h2>Latest Jobs Posted on GoSkillNexa</h2>
+        </div>
+        {% if jobs|length > 0 %}
+            <div id="local-jobs-container">
+              {% for job in jobs %}
+                <div class="job-card">
+                    <div class="card-content">
+                        <img src="{{ url_for('static', filename='profile_pics/' + (job.profile_image if job.profile_image else 'default.png')) }}" 
+                             alt="Job Icon" class="platform-logo"
+                             onerror="this.src='/static/profile_pics/default.png';">
+                        <div class="job-details">
+                            <h3>{{ job['job_title'] }}</h3>
+                            <p><strong>Company:</strong> {{ job['company_name'] }}</p>
+                            <p><strong>Location:</strong> {{ job['location'] }}</p>
+                            <p>{{ job['description']|truncate(150) }}</p>
+                            <small>Posted on: {{ job['posted_on'] }}</small>
+                        </div>
+                    </div>
+                    <a href="{{ url_for('job_details', job_id=job['id']) }}" class="view-btn">View & Apply</a>
+                </div>
+              {% endfor %}
+            </div>
+        {% else %}
+            <div class="placeholder-text">
+                <i class="fas fa-briefcase"></i>
+                <p>No job postings found.</p>
+            </div>
+        {% endif %}
+        <div class="results-header" style="margin-top: 40px;">
+            <h2>Search Suggestions</h2>
+            <span id="results-count"></span>
+        </div>
+        <div id="results-container">
+            <div class="placeholder-text">
+                <i class="fas fa-briefcase"></i>
+                <p>Your job search suggestions will appear here. <br> Use the filters to find your perfect match.</p>
+            </div>
+        </div>
+    </main>
+</div>
+<footer>
+  <div class="container">
+    © 2026 Resume Analyzer by GoSkillNexa. All rights reserved.
+  </div>
+</footer>
+<script>
+function handleSearch() {
+    const keyword = document.getElementById("keyword").value.trim();
+    const location = document.getElementById("location").value.trim();
+    const workStyle = document.getElementById("workStyle").value;
+    const datePosted = document.getElementById("datePosted").value;
+    const resultsContainer = document.getElementById("results-container");
+    const resultsCount = document.getElementById("results-count");
+    const errorMessage = document.getElementById("error-message");
+    if (!keyword) {
+      errorMessage.style.display = 'block';
+      return;
+    }
+    errorMessage.style.display = 'none';
+    resultsContainer.innerHTML = '';
+    const platforms = [
+        { name: 'LinkedIn', logo: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/LinkedIn_logo_initials.png' },
+        { name: 'Indeed', logo: '/static/images/indeed.png' },
+        { name: 'Naukri.com', logo: 'https://static.naukimg.com/s/0/0/i/naukri-identity/naukri_gnb_logo.svg' },
+        { name: 'Shine.com', logo: 'https://www.shine.com/next/static/images/shine-logo.png' }
+    ];
+    platforms.forEach(platform => {
+        const card = document.createElement('div');
+        card.className = 'job-card';
+        const finalLocation = workStyle === 'Remote' ? 'Remote' : location;
+        const preciseKeyword = `"${keyword}"`; 
+        const encodedPreciseKeyword = encodeURIComponent(preciseKeyword);
+        const encodedLocation = encodeURIComponent(finalLocation);
+        let url = '#';
+        switch(platform.name) {
+            case 'LinkedIn':
+                url = `https://www.linkedin.com/jobs/search/?keywords=${encodedPreciseKeyword}&location=${encodedLocation}&sortBy=DD`;
+                if (workStyle === 'Remote') url += '&f_WT=2';
+                if (workStyle === 'Hybrid') url += '&f_WT=3';
+                if (datePosted === 'day') url += '&f_TPR=r86400';
+                if (datePosted === 'week') url += '&f_TPR=r604800';
+                if (datePosted === 'month') url += '&f_TPR=r2592000';
+                break;
+            case 'Indeed':
+                url = `https://www.indeed.com/jobs?q=${encodedPreciseKeyword}&l=${encodedLocation}&sort=date`;
+                if (datePosted === 'day') url += '&fromage=1';
+                if (datePosted === 'week') url += '&fromage=7';
+                if (datePosted === 'month') url += '&fromage=30';
+                break;
+            case 'Naukri.com':
+                let naukriLocation = workStyle === 'Remote' ? 'remote' : location.replace(/\s+/g, '-');
+                url = `https://www.naukri.com/${keyword.replace(/\s+/g, '-')}-jobs-in-${naukriLocation}?sort=d`;
+                if (workStyle === 'Hybrid') url += '&wfh=2';
+                if (datePosted === 'day') url += '&lastActive=1';
+                if (datePosted === 'week') url += '&lastActive=7';
+                if (datePosted === 'month') url += '&lastActive=30';
+                break;
+            case 'Shine.com':
+                 url = `https://www.shine.com/job-search/${keyword.replace(/\s+/g, '-')}-jobs-in-${location.replace(/\s+/g, '-')}`;
+                 break;
+        }
+        card.innerHTML = `
+            <div class="card-content">
+                <img src="${platform.logo}" alt="${platform.name} Logo" class="platform-logo" onerror="this.src='https://placehold.co/60x60/eee/ccc?text=Logo'">
+                <div class="job-details">
+                    <h3>'${keyword}'</h3>
+                    <p>Search on ${platform.name} in ${finalLocation || 'any location'}</p>
+                </div>
+            </div>
+            <a href="${url}" target="_blank" class="view-btn">View Jobs <i class="fas fa-external-link-alt"></i></a>
+        `;
+        resultsContainer.appendChild(card);
+    });
+    resultsCount.textContent = `${platforms.length} suggestions found`;
+}
+</script>
+</body>
+</html>

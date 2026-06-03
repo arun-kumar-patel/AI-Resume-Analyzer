@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoSkillNexa - Elite AI Talent Platform</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1, #f43f5e);
+            --navy-deep: #030712; 
+            --navy-navbar: #0a192f;
+            --navy-light: #112240;
+            --brand-primary: #0ea5e9;
+            --slate-300: #cbd5e1;
+            --slate-500: #64748b;
+            --white: #ffffff;
+            --font-main: 'Plus Jakarta Sans', sans-serif;
+            --font-display: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-main); background-color: var(--white); color: var(--navy-deep); line-height: 1.6; overflow-x: hidden; scroll-behavior: smooth; }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+        /* --- 1. NAVBAR --- */
+        header {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(10, 25, 47, 0.98); backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255,255,255,0.08); padding: 14px 0;
+        }
+        nav { display: flex; justify-content: space-between; align-items: center; width: 100%; padding: 0 50px; }
+        
+        /* ✅ LOGO UPDATED: GoSkill White & Nexa Gradient */
+       .logo { 
+            display: flex; 
+            align-items: center; 
+            gap: 0px; /* 🔥 FIX */
+            font-size: 28px; 
+            font-weight: 800; 
+            text-decoration: none !important; 
+            font-family: var(--font-display); 
+            letter-spacing: -1.5px;
+        }
+
+        .logo i {
+    font-size: 30px;
+    margin-right: 6px; /* ✅ space add */
+
+    /* ✅ Dashboard jaisa gradient */
+    background: var(--brand-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+        .logo .goskill { color: #ffffff !important; }
+        .logo .nexa { color: var(--brand-primary) !important; }
+
+        .nav-links { display: flex; gap: 35px; align-items: center; }
+        .nav-links a { color: var(--slate-300); text-decoration: none; font-size: 14px; font-weight: 600; transition: 0.3s; text-transform: uppercase; }
+        .nav-links a:hover { color: var(--white); }
+        .btn-portal { background: var(--brand-gradient); color: white !important; padding: 10px 24px; border-radius: 6px; font-weight: 700; text-decoration: none; transition: 0.4s ease; }
+
+        /* --- 2. HERO SECTION --- */
+        .hero { 
+            padding: 240px 0 160px; 
+            text-align: center;
+            position: relative;
+            background-color: #ffffff;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(14, 165, 233, 0.15) 0px, transparent 50%),
+                radial-gradient(at 100% 0%, rgba(99, 102, 241, 0.15) 0px, transparent 50%),
+                radial-gradient(at 50% 100%, rgba(244, 63, 94, 0.1) 0px, transparent 50%);
+        }
+
+        .hero h1 { font-family: var(--font-display); font-size: clamp(45px, 8vw, 85px); font-weight: 800; color: var(--navy-navbar); line-height: 1; letter-spacing: -4px; margin-bottom: 25px; }
+        .hero h1 span { background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--slate-500); font-size: 22px; max-width: 650px; margin: 0 auto 50px; }
+
+        .hero-btns { display: flex; justify-content: center; gap: 20px; }
+        .btn-scan, .btn-employer { 
+            padding: 18px 45px; border-radius: 12px; font-weight: 700; text-decoration: none; font-size: 16px; transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; gap: 10px; cursor: pointer;
+        }
+        .btn-scan { background: var(--navy-navbar); color: white; border: none; }
+        .btn-employer { background: white; color: var(--navy-navbar); border: 2.5px solid #e2e8f0; }
+        .btn-scan:hover, .btn-employer:hover { 
+            background: var(--brand-primary); 
+            color: white; 
+            border-color: var(--brand-primary);
+            transform: translateY(-8px); 
+            box-shadow: 0 15px 30px rgba(14, 165, 233, 0.3); 
+        }
+
+        /* --- 3. HIRING STEPS --- */
+        .steps { padding: 120px 0; background-color: #1e293b; border-top: 1px solid rgba(255,255,255,0.1); }
+        .section-header { text-align: center; margin-bottom: 80px; }
+        .section-header h2 { font-size: 42px; font-weight: 800; color: white; font-family: var(--font-display); }
+        .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+        
+        .step-card { 
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); 
+            padding: 60px 40px; border-radius: 28px; transition: 0.4s; height: 100%;
+        }
+        .step-card:hover { 
+            transform: translateY(-15px); background: rgba(255, 255, 255, 0.08); 
+            border-color: var(--brand-primary); box-shadow: 0 30px 60px rgba(0,0,0,0.3); 
+        }
+        .step-card h3 { font-size: 26px; font-weight: 800; color: #ffffff; margin-bottom: 15px; font-family: var(--font-display); }
+        .step-card p { color: #e2e8f0; font-size: 17px; line-height: 1.7; }
+        .step-card i { font-size: 45px; color: var(--brand-primary); margin-bottom: 30px; display: block; }
+
+        /* --- 4. SUCCESS STORIES --- */
+        .testimonials { padding: 120px 0; background: #f0f9ff; }
+        .test-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        .test-card { 
+            background: white; padding: 45px; border-radius: 24px; border: 1px solid #e0f2fe; 
+            transition: 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.03); height: 100%;
+        }
+        .test-card:hover { transform: translateY(-10px); border-color: var(--brand-primary); box-shadow: 0 20px 40px rgba(14, 165, 233, 0.1); }
+        .test-card p { font-style: italic; color: #0f172a; font-size: 18px; font-weight: 600; margin-bottom: 30px; line-height: 1.8; }
+        .test-card h4 { color: var(--navy-navbar); font-weight: 800; font-size: 18px; margin-bottom: 5px; }
+        .test-card small { color: var(--brand-primary); font-weight: 700; font-size: 14px; text-transform: uppercase; }
+
+        /* --- 5. FOOTER --- */
+        footer { 
+            background: #010409; padding: 100px 0 40px; 
+            border-top: 1px solid rgba(255,255,255,0.05); color: #94a3b8;
+        }
+        .footer-grid { 
+            display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; 
+            gap: 50px; margin-bottom: 80px; 
+        }
+        .footer-about .f-logo { 
+            font-size: 26px; font-weight: 800; margin-bottom: 25px; display: block; text-decoration: none;
+            background: var(--brand-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        .footer-about p { font-size: 15px; line-height: 1.8; margin-bottom: 30px; }
+        
+        .social-links { display: flex; gap: 15px; align-items: center; margin-top: 25px; } 
+        .social-links a { 
+            width: 40px; height: 40px; background: rgba(255,255,255,0.03); 
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 50%; 
+            display: grid; place-items: center; color: #fff; transition: 0.3s; font-size: 18px;
+            text-decoration: none;
+        }
+        .social-links a:hover { 
+            background: var(--brand-primary); border-color: var(--brand-primary); 
+            transform: translateY(-5px); box-shadow: 0 10px 20px rgba(14, 165, 233, 0.3);
+        }
+
+        .footer-column h4 { color: #fff; font-size: 14px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 30px; font-family: var(--font-display); }
+        .footer-column ul { list-style: none; }
+        .footer-column ul li { margin-bottom: 15px; }
+        .footer-column ul li a { color: #94a3b8; text-decoration: none; font-size: 14px; transition: 0.3s ease; display: inline-block; }
+        .footer-column ul li a:hover { color: var(--brand-primary); transform: translateX(8px); }
+
+        .footer-bottom { border-top: 1px solid rgba(255,255,255,0.05); padding-top: 40px; display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: #64748b; }
+        .footer-bottom-links { display: flex; gap: 30px; }
+        .footer-bottom-links a { color: #64748b; text-decoration: none; }
+
+        @media (max-width: 768px) { .hero-btns { flex-direction: column; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="{{ url_for('home') }}" class="logo">
+            <i class="fas fa-layer-group"></i><span class="goskill">GoSkill</span><span class="nexa">Nexa</span>
+        </a>
+            <div class="nav-links">
+                <a href="{{ url_for('search') }}">Search Job</a>
+                <a href="{{ url_for('about') }}">Platform</a>
+                <a href="{{ url_for('contact') }}">Contact</a>
+
+                {% if session.get('user_id') %}
+                    <a href="{{ url_for('dashboard') }}" class="btn-portal">Dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}">Sign In</a>
+                    <a href="{{ url_for('signup') }}" class="btn-portal">Join Now</a>
+                {% endif %}
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container" data-aos="zoom-out">
+                <h1>AI Talent Intelligence.<br><span>Match Ambition.</span></h1>
+                <p>The smartest way to bridge the gap between your skills and global innovators.</p>
+                <div class="hero-btns">
+                    <a href="{{ url_for('upload') }}" class="btn-scan"><i class="fas fa-magic"></i> Scan My Resume</a>
+                    <a href="{{ url_for('hire') }}" class="btn-employer">For Employers</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="steps">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up"><h2>Seamless Hiring Steps</h2></div>
+                <div class="steps-grid">
+                    <div data-aos="fade-up" data-aos-delay="100">
+                        <div class="step-card">
+                            <i class="fas fa-microchip"></i>
+                            <h3>Smart Scan</h3>
+                            <p>AI extracts core tech-skills and potential within seconds from your PDF.</p>
+                        </div>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <div class="step-card">
+                            <i class="fas fa-brain"></i>
+                            <h3>Match-Scoring</h3>
+                            <p>Our neural engine ranks you against 5000+ active roles using advanced compatibility.</p>
+                        </div>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="300">
+                        <div class="step-card">
+                            <i class="fas fa-rocket"></i>
+                            <h3>Direct Apply</h3>
+                            <p>Apply to verified companies with just one single intelligence-backed click.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="testimonials">
+            <div class="container">
+                <div class="section-header" data-aos="fade-up"><h2 style="color:var(--navy-navbar)">Success Stories</h2></div>
+                <div class="test-grid">
+                    <div data-aos="fade-up" data-aos-delay="100">
+                        <div class="test-card">
+                            <p>"The AI matching accuracy is unmatched. I found a Senior Dev role that perfectly fits my stack in 2 days."</p>
+                            <h4>Rohan Sharma</h4>
+                            <small>Software Engineer @ Google</small>
+                        </div>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="200">
+                        <div class="test-card">
+                            <p>"GoSkillNexa saved our HR team 50+ hours of screening every week. The candidate scoring is scary accurate."</p>
+                            <h4>Sarah Jenkins</h4>
+                            <small>HR Lead @ Meta</small>
+                        </div>
+                    </div>
+                    <div data-aos="fade-up" data-aos-delay="300">
+                        <div class="test-card">
+                            <p>"As a fresher, the skill assessments helped me understand exactly where I stood in the global market."</p>
+                            <h4>Ankit Varma</h4>
+                            <small>Junior Developer @ Amazon</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <a href="#" class="f-logo">GoSkill<span>Nexa</span></a>
+                    <p>The world's leading AI-powered talent intelligence platform. We match elite talent with the future of technology.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#">AI Resume Scan</a></li>
+                        <li><a href="#">Job Marketplace</a></li>
+                        <li><a href="#">Skill Assessment</a></li>
+                        <li><a href="#">Career Roadmap</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Solutions</h4>
+                    <ul>
+                        <li><a href="#">Enterprise Sourcing</a></li>
+                        <li><a href="#">Recruitment CRM</a></li>
+                        <li><a href="#">Talent Insights</a></li>
+                        <li><a href="#">API Documentation</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Our AI</a></li>
+                        <li><a href="#">Privacy Center</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                        <li><a href="#">Contact Support</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2026 Resume Analyzer by GoSkillNexa. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Cookie Settings</a>
+                    <a href="#">Legal</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script> AOS.init({ duration: 1000, once: true }); </script>
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Upload Resume - GoSkillNexa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    :root {
+      --primary-dark: #111439;
+      --primary-accent: #00FFFF;
+      --text-light: #F8F8F9;
+      --text-dark: #333;
+      --bg-light: #FFFFFF;
+      --bg-secondary: #F8F8F9;
+      --font-heading: 'Poppins', sans-serif;
+      --font-body: 'Inter', sans-serif;
+      --shadow: 0 8px 24px rgba(17, 20, 57, 0.08);
+      --border-color: #e0e0e0;
+      --success-green: #00796b;
+    }
+
+    body {
+      margin: 0;
+      font-family: var(--font-body);
+      background-color: var(--bg-secondary);
+      color: var(--text-dark);
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    header {
+      background-color: var(--bg-light);
+      padding: 15px 0;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    nav { display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-family: var(--font-heading); font-size: 24px; font-weight: 700; color: var(--primary-dark); text-decoration: none; }
+    .logo span { color: var(--primary-accent); }
+    .nav-links { display: flex; align-items: center; gap: 25px; }
+    .nav-links a { color: var(--text-dark); text-decoration: none; font-weight: 500; transition: color 0.3s ease; }
+    .nav-links a:hover { color: var(--primary-accent); }
+    .nav-links .signup-link { color: var(--primary-accent); font-weight: 600; }
+
+    main { padding: 60px 0; }
+
+    .upload-wrapper {
+        background: var(--bg-light);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+        padding: 50px 40px;
+        border: 1px solid var(--border-color);
+        text-align: center;
+    }
+
+    #upload-step h1 { font-family: var(--font-heading); color: var(--primary-dark); margin-top: 0; font-size: 32px; }
+    #upload-step p { color: #64748b; font-size: 18px; margin-bottom: 40px; }
+    
+    .drop-zone { 
+        border: 2px dashed #cbd5e1; 
+        border-radius: 16px; 
+        padding: 60px 40px; 
+        cursor: pointer; 
+        transition: 0.3s; 
+        background: #f8fafc;
+    }
+    .drop-zone.dragover { background-color: #f0fdff; border-color: var(--primary-accent); }
+    .drop-zone i { font-size: 56px; color: var(--primary-accent); margin-bottom: 20px; }
+    .drop-zone-text { font-size: 16px; font-weight: 500; color: #475569; }
+    .drop-zone-text span { color: var(--primary-dark); font-weight: 700; text-decoration: underline; }
+    
+    #resume-input { display: none; }
+    #file-info { margin-top: 25px; font-weight: 600; color: #2563eb; display: none; }
+    #error-message { color: #dc2626; font-weight: 600; margin-top: 20px; display: none; }
+    
+    .analyze-btn { 
+        padding: 16px 40px; 
+        background: var(--primary-dark); 
+        color: white; 
+        border: none; 
+        border-radius: 12px; 
+        font-size: 18px; 
+        font-weight: 700; 
+        cursor: pointer; 
+        transition: 0.3s; 
+        margin-top: 30px; 
+        display: none;
+    }
+    .analyze-btn:hover { background: #1d4ed8; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(17, 20, 57, 0.2); }
+
+    /* ANALYZING STEP */
+    #analyzing-step { display: none; padding: 60px 0; }
+    .spinner { width: 64px; height: 64px; border: 6px solid #e2e8f0; border-top-color: var(--primary-accent); border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 25px auto; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    #analyzing-step h2 { font-family: var(--font-heading); color: var(--primary-dark); font-size: 24px; }
+
+    /* RESULTS STEP */
+    #results-step { display: none; text-align: left; }
+    #results-step h2 { font-family: var(--font-heading); color: var(--primary-dark); text-align: center; margin-bottom: 40px; font-size: 28px; }
+    .results-layout { display: flex; flex-direction: column; gap: 40px; }
+    
+    .skills-section h3, .jobs-section h3 { 
+        font-family: var(--font-heading); 
+        font-size: 22px; 
+        color: var(--primary-dark);
+        border-bottom: 3px solid var(--primary-accent); 
+        padding-bottom: 12px; 
+        margin-bottom: 25px;
+        display: flex; align-items: center; gap: 10px;
+    }
+    
+    #skills-list { display: flex; flex-wrap: wrap; gap: 12px; }
+    .skill-tag { background-color: #e0f2fe; color: #0369a1; padding: 10px 20px; border-radius: 50px; font-size: 14px; font-weight: 700; border: 1px solid #bae6fd; }
+    
+    #job-matches-list { display: flex; flex-direction: column; gap: 20px; }
+    .job-card { 
+        background-color: var(--bg-light); 
+        padding: 24px; 
+        border-radius: 16px; 
+        border: 1px solid var(--border-color); 
+        display: flex; align-items: center; justify-content: space-between;
+        transition: 0.3s;
+    }
+    .job-card:hover { border-color: var(--primary-accent); transform: scale(1.01); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+    
+    .card-content { display: flex; align-items: center; gap: 20px; }
+    .company-logo { width: 50px; height: 50px; border-radius: 12px; object-fit: cover; border: 1px solid #f1f5f9; }
+    .job-details h4 { margin: 0 0 5px 0; font-size: 18px; color: var(--primary-dark); }
+    .job-details p { margin: 0; font-size: 15px; color: #64748b; font-weight: 500; }
+    
+    .apply-btn { 
+        padding: 12px 28px; 
+        background-color: var(--primary-dark); 
+        color: white; 
+        text-decoration: none; 
+        border: none; 
+        border-radius: 10px; 
+        font-weight: 700; 
+        transition: 0.3s; 
+        font-size: 14px; 
+        cursor: pointer; 
+    }
+    .apply-btn:hover { background-color: #2563eb; transform: translateY(-2px); }
+
+    /* MODAL STYLING & LOGO SIZE FIX */
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(3, 7, 18, 0.6);
+        backdrop-filter: blur(8px);
+        display: flex; align-items: center; justify-content: center;
+        z-index: 2000; opacity: 0; visibility: hidden;
+        transition: 0.3s;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-content {
+        background: var(--bg-light); padding: 40px; border-radius: 24px;
+        width: 90%; max-width: 550px; transform: scale(0.9);
+        transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    }
+    .modal-overlay.active .modal-content { transform: scale(1); }
+    .modal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        border-bottom: 2px solid #f1f5f9;
+        padding-bottom: 20px; margin-bottom: 30px;
+    }
+    .modal-header h3 { margin: 0; font-family: var(--font-heading); color: var(--primary-dark); font-size: 24px; }
+    .modal-header h3 span { color: var(--primary-accent); }
+    .close-modal { font-size: 28px; border: none; background: none; cursor: pointer; color: #94a3b8; transition: 0.2s; }
+    .close-modal:hover { color: #ef4444; transform: rotate(90deg); }
+    
+    .platform-links { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .platform-links a {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        padding: 25px 15px; border: 2px solid #f1f5f9; border-radius: 16px;
+        text-decoration: none; color: var(--text-dark); font-weight: 700;
+        transition: 0.3s;
+        min-height: 120px; /* सब बटन्स की ऊंचाई एक बराबर रखने के लिए */
+    }
+    .platform-links a:hover {
+        background-color: #f0f9ff; border-color: #2563eb;
+        transform: translateY(-5px); box-shadow: 0 10px 20px rgba(37, 99, 235, 0.1);
+    }
+
+    /* --- LOGO SIZE FIX FOR NAUKRI & INDEED --- */
+    .platform-links img { 
+        height: 35px;        /* सभी लोगो की ऊंचाई एक समान */
+        width: auto;         /* चौड़ाई लोगो के असली रेश्यो के हिसाब से बढ़ेगी */
+        max-width: 150px;    /* बहुत ज्यादा चौड़ा न हो इसलिए लिमिट */
+        margin-bottom: 12px; 
+        object-fit: contain; 
+    }
+
+    /* LinkedIn जैसे चौरस लोगो के लिए थोड़ा छोटा हाइट */
+    .platform-links img[alt="LinkedIn"] {
+        height: 32px;
+    }
+
+    footer { background-color: #030712; color: #94a3b8; text-align: center; padding: 40px 0; font-size: 14px; margin-top: 80px; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <nav>
+      <a href="/" class="logo">GoSkill<span>Nexa</span></a>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/search">Search Jobs</a>
+        <a href="/login">Login</a>
+        <a href="/signup" class="signup-link">Sign Up</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main>
+    <div class="container">
+        <div class="upload-wrapper">
+            <div id="upload-step">
+                <h1>Upload Your Resume</h1>
+                <p>Let our AI analyze your skills and find the best job matches for you.</p>
+                <div class="drop-zone" id="drop-zone">
+                    <input type="file" id="resume-input" accept=".pdf,.doc,.docx" />
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p class="drop-zone-text">Drag & Drop your resume here, or <span>browse files</span></p>
+                    <p style="font-size: 13px; color: #94a3b8; margin-top: 10px;">Max file size: 2MB (PDF, DOCX)</p>
+                </div>
+                <div id="file-info"></div>
+                <div id="error-message"></div>
+                <button class="analyze-btn" id="analyze-btn">Analyze & Get Jobs</button>
+            </div>
+            
+            <div id="analyzing-step">
+                <div class="spinner"></div>
+                <h2>Analyzing your resume with AI...</h2>
+                <p>Identifying your core technical skills and matching with top roles.</p>
+            </div>
+            
+            <div id="results-step">
+                <h2><i class="fas fa-check-circle" style="color: #10b981;"></i> Analysis Complete!</h2>
+                <div class="results-layout">
+                    <div class="skills-section">
+                        <h3><i class="fas fa-microchip"></i> Detected Skills</h3>
+                        <div id="skills-list"></div>
+                    </div>
+                    <div class="jobs-section">
+                        <h3><i class="fas fa-rocket"></i> Best-Fit Career Matches</h3>
+                        <div id="job-matches-list"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<div class="modal-overlay" id="apply-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3 id="modal-title">Apply for Job</h3>
+            <button class="close-modal" id="close-modal">&times;</button>
+        </div>
+        <div class="platform-links" id="platform-links"></div>
+    </div>
+</div>
+
+<footer>
+  <div class="container">
+    © 2026 Resume Analyzer by GoSkillNexa. All rights reserved.
+  </div>
+</footer>
+
+<script>
+    const dropZone = document.getElementById('drop-zone');
+    const fileInput = document.getElementById('resume-input');
+    const fileInfo = document.getElementById('file-info');
+    const errorMessage = document.getElementById('error-message');
+    const analyzeBtn = document.getElementById('analyze-btn');
+    const uploadStep = document.getElementById('upload-step');
+    const analyzingStep = document.getElementById('analyzing-step');
+    const resultsStep = document.getElementById('results-step');
+    const applyModal = document.getElementById('apply-modal');
+    const closeModalBtn = document.getElementById('close-modal');
+    const modalTitle = document.getElementById('modal-title');
+    const platformLinksContainer = document.getElementById('platform-links');
+
+    const skillProfiles = {
+        'frontend': {
+            skills: ['HTML', 'CSS', 'JavaScript', 'React', 'Tailwind CSS', 'Git'],
+            jobs: [
+                { title: 'Frontend Developer', company: 'Innovate Hub', logo: 'https://placehold.co/60x60/111439/00FFFF?text=I' },
+                { title: 'React Developer', company: 'Creative Minds', logo: 'https://placehold.co/60x60/111439/00FFFF?text=C' }
+            ]
+        },
+        'backend': {
+            skills: ['Python', 'Django', 'Node.js', 'SQL', 'REST APIs', 'Docker'],
+            jobs: [
+                { title: 'Backend Developer', company: 'Server Side Co.', logo: 'https://placehold.co/60x60/111439/00FFFF?text=S' },
+                { title: 'Python Developer', company: 'Data Insights LLC', logo: 'https://placehold.co/60x60/111439/00FFFF?text=D' }
+            ]
+        },
+        'fullstack': {
+            skills: ['JavaScript', 'React', 'Node.js', 'MongoDB', 'Express.js', 'Git'],
+            jobs: [
+                { title: 'Full Stack Engineer', company: 'Tech Solutions Inc.', logo: 'https://placehold.co/60x60/111439/00FFFF?text=T' },
+                { title: 'MERN Stack Developer', company: 'NextGen Products', logo: 'https://placehold.co/60x60/111439/00FFFF?text=N' }
+            ]
+        }
+    };
+
+    let currentFileName = '';
+
+    dropZone.addEventListener('click', () => fileInput.click());
+    dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+        if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            handleFile(fileInput.files[0]);
+        }
+    });
+    fileInput.addEventListener('change', () => {
+        if (fileInput.files.length) handleFile(fileInput.files[0]);
+    });
+
+    function handleFile(file) {
+        errorMessage.style.display = 'none';
+        if (file.size > 2 * 1024 * 1024) {
+            errorMessage.textContent = '❌ File too large! Please select a file smaller than 2MB.';
+            errorMessage.style.display = 'block';
+            fileInput.value = '';
+            fileInfo.style.display = 'none';
+            analyzeBtn.style.display = 'none';
+            return;
+        }
+        currentFileName = file.name.toLowerCase();
+        fileInfo.textContent = `Selected: ${file.name}`;
+        fileInfo.style.display = 'block';
+        analyzeBtn.style.display = 'inline-block';
+    }
+
+    analyzeBtn.addEventListener('click', () => {
+        uploadStep.style.display = 'none';
+        analyzingStep.style.display = 'block';
+        setTimeout(() => {
+            analyzingStep.style.display = 'none';
+            resultsStep.style.display = 'block';
+            
+            let profileKey = 'fullstack';
+            if (currentFileName.includes('frontend') || currentFileName.includes('react')) {
+                profileKey = 'frontend';
+            } else if (currentFileName.includes('backend') || currentFileName.includes('python')) {
+                profileKey = 'backend';
+            }
+            
+            const profile = skillProfiles[profileKey];
+            populateResults(profile.skills, profile.jobs);
+        }, 2000);
+    });
+
+    function populateResults(skills, jobs) {
+        const skillsList = document.getElementById('skills-list');
+        const jobMatchesList = document.getElementById('job-matches-list');
+        skillsList.innerHTML = '';
+        jobMatchesList.innerHTML = '';
+
+        skills.forEach(skill => {
+            const tag = document.createElement('div');
+            tag.className = 'skill-tag';
+            tag.textContent = skill;
+            skillsList.appendChild(tag);
+        });
+
+        jobs.forEach(job => {
+            const card = document.createElement('div');
+            card.className = 'job-card';
+            card.innerHTML = `
+                <div class="card-content">
+                    <img src="${job.logo}" alt="${job.company} Logo" class="company-logo">
+                    <div class="job-details">
+                        <h4>${job.title}</h4>
+                        <p>${job.company}</p>
+                    </div>
+                </div>
+                <button class="apply-btn" data-job-title="${job.title}">Apply Now</button>
+            `;
+            jobMatchesList.appendChild(card);
+        });
+    }
+
+    document.addEventListener('click', function(e) {
+        if (e.target && e.target.classList.contains('apply-btn')) {
+            const jobTitle = e.target.getAttribute('data-job-title');
+            openApplyModal(jobTitle);
+        }
+    });
+
+    function openApplyModal(jobTitle) {
+        modalTitle.innerHTML = `Apply for <span>'${jobTitle}'</span>`;
+        platformLinksContainer.innerHTML = '';
+
+        const platforms = [
+            { name: 'LinkedIn', logo: '/static/images/linkedin.png' },
+            { name: 'Indeed', logo: '/static/images/indeed.png' },
+            { name: 'Naukri.com', logo: '/static/images/naukri.png' },
+            { name: 'Shine.com', logo: '/static/images/shine.png' }
+        ];
+
+        platforms.forEach(platform => {
+            const encodedKeyword = encodeURIComponent(`"${jobTitle}"`);
+            let url = '#';
+            switch(platform.name) {
+                case 'LinkedIn': url = `https://www.linkedin.com/jobs/search/?keywords=${encodedKeyword}&sortBy=DD`; break;
+                case 'Indeed': url = `https://www.indeed.com/jobs?q=${encodedKeyword}&l=India&sort=date`; break;
+                case 'Naukri.com': url = `https://www.naukri.com/${jobTitle.replace(/\s+/g, '-')}-jobs?sort=d`; break;
+                case 'Shine.com': url = `https://www.shine.com/job-search/${jobTitle.replace(/\s+/g, '-')}-jobs`; break;
+            }
+
+            const link = document.createElement('a');
+            link.href = url;
+            link.target = '_blank';
+            link.innerHTML = `<img src="${platform.logo}" alt="${platform.name}"> ${platform.name}`;
+            platformLinksContainer.appendChild(link);
+        });
+
+        applyModal.classList.add('active');
+    }
+
+    closeModalBtn.addEventListener('click', () => applyModal.classList.remove('active'));
+    applyModal.addEventListener('click', (e) => {
+        if (e.target === applyModal) applyModal.classList.remove('active');
+    });
+
+</script>
+
+</body>
+</html>

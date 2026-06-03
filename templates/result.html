@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Upload Successful - GoSkillNexa</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f4;
+      color: #333;
+    }
+    nav {
+      background-color: #002b5c;
+      padding: 15px;
+      text-align: center;
+    }
+    nav a {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #004080;
+      color: #fff;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 6px;
+      margin: 5px;
+      border: 2px solid transparent;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    }
+    nav a:hover {
+      background: #fff;
+      color: #004080;
+      border-color: #004080;
+    }
+    .container {
+      max-width: 700px;
+      background: #fff;
+      margin: 80px auto;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    h1 {
+      color: #002b5c;
+      margin-bottom: 20px;
+    }
+    p {
+      font-size: 17px;
+      margin-bottom: 20px;
+    }
+    a.download-link {
+      display: inline-block;
+      padding: 10px 20px;
+      background: #004080;
+      color: #fff;
+      border-radius: 6px;
+      text-decoration: none;
+      transition: background 0.3s ease;
+    }
+    a.download-link:hover {
+      background: #002b5c;
+    }
+    .job-card {
+      background: #f0f8ff;
+      padding: 20px;
+      margin: 25px 0;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      text-align: left;
+      transition: transform 0.3s ease;
+    }
+    .job-card:hover {
+      transform: scale(1.02);
+    }
+    .job-card h4 {
+      color: #002b5c;
+      margin: 0 0 10px 0;
+    }
+    .job-card p {
+      margin: 0;
+    }
+    .apply-btn {
+      display: inline-block;
+      margin-top: 15px;
+      padding: 10px 25px;
+      background-color: #004080;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .apply-btn:hover {
+      background-color: #002b5c;
+      transform: scale(1.05);
+    }
+    .job-footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #666;
+    }
+    .job-footer a {
+      color: #004080;
+      text-decoration: none;
+    }
+    .job-footer a:hover {
+      text-decoration: underline;
+    }
+
+    /* 🔔 Popup */
+    .popup {
+      padding: 15px;
+      margin-top: 20px;
+      background-color: #ffe9e9;
+      color: #cc0000;
+      border: 1px solid #cc0000;
+      border-radius: 8px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/">Home</a>
+  <a href="/upload">Upload</a>
+  <a href="/search">Search</a>
+  <a href="/contact">Contact</a>
+  <a href="/faq">FAQ</a>
+  <a href="/about">About</a>
+</nav>
+
+<div class="container">
+  <h1>Upload Successful!</h1>
+  <p>Your file <strong>{{ filename }}</strong> has been uploaded successfully.</p>
+
+  <a class="download-link" href="{{ url_for('uploaded_file', filename=filename) }}" target="_blank">Download File</a>
+  <br><br>
+  <a class="download-link" href="/">Back to Home</a>
+
+  {% if best_jobs %}
+    <div style="margin-top: 40px; text-align: left;">
+      <h3 style="color: #002b5c;">Job Suggestions Based on Your Resume</h3>
+
+      {% if country and not best_jobs[0].job_country.lower().startswith(country.lower()) %}
+        <div class="popup">
+          No jobs found in <strong>{{ country.title() }}</strong>. Showing jobs from other countries instead.
+        </div>
+      {% endif %}
+
+      {% for job in best_jobs %}
+        <div class="job-card">
+          <h4>{{ job.job_title }}</h4>
+          <p><strong>{{ job.company_name }}</strong></p>
+          <p>📍 {{ job.job_city }}, {{ job.job_country }}</p>
+
+          <a class="apply-btn"
+             href="{% if 'india' in job.job_country|lower or 'ind' in job.job_city|lower %}
+                      {{ job.job_apply_link }}
+                    {% else %}
+                      https://www.naukri.com/jobs-in-india
+                    {% endif %}"
+             target="_blank">Apply Now</a>
+        </div>
+      {% endfor %}
+    </div>
+  {% elif query %}
+    <p style="color: red; font-weight: bold;">No matching jobs found for: <strong>{{ query }}</strong></p>
+  {% endif %}
+
+  <div class="job-footer">
+    🔍 For more jobs, try <a href="https://www.linkedin.com/jobs/search/?keywords={{ query }}" target="_blank">LinkedIn</a>
+    or <a href="https://www.indeed.co.in/jobs?q={{ query }}" target="_blank">Indeed India</a>.
+  </div>
+</div>
+
+</body>
+</html>

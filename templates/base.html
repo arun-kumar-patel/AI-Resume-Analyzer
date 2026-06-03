@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GoSkillNexa - AI-powered job portal for elite talent matching.">
+    <meta name="author" content="Anand Patel">
+    
+    <title>{% block title %}GoSkillNexa - Intelligence for Your Next Move{% endblock %}</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --brand-gradient: linear-gradient(135deg, #0ea5e9, #6366f1);
+            --navy-navbar: #0a192f;
+            --brand-primary: #0ea5e9;
+            --white: #ffffff;
+            --text-main: #0f172a;
+        }
+
+        /* --- ❌ NO UNDERLINE LOGIC (FINAL BOSS) --- */
+        a, a:hover, a:focus, a:active, 
+        .nav-links a, .nav-link-item, 
+        .btn-plan, .btn-post-nav, .logo {
+            text-decoration: none !important;
+            border-bottom: none !important;
+            outline: none !important;
+            box-shadow: none !important;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: #f8fafc; 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: sticky; top: 0; width: 100%; z-index: 1200;
+            background: var(--navy-navbar);
+            height: 80px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        }
+        
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            width: 100%; 
+            max-width: 1400px; 
+            margin: 0 auto; 
+            padding: 0 40px; 
+        }
+        
+        .logo { 
+            font-size: 26px; font-weight: 800; color: white; font-family: 'Outfit', sans-serif;
+        }
+        .logo span { color: var(--brand-primary); }
+
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        
+        .nav-link-item { 
+            color: #cbd5e1; font-size: 14px; font-weight: 600; 
+            padding: 8px 12px; border-radius: 10px;
+            display: flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .nav-link-item:hover { color: white; background: rgba(255, 255, 255, 0.05); }
+        .nav-link-item i { color: var(--brand-primary); }
+
+        .btn-plan {
+            color: var(--brand-primary) !important;
+            border: 1.5px solid rgba(14, 165, 233, 0.4);
+            padding: 8px 16px; border-radius: 12px;
+            display: inline-flex; align-items: center; gap: 8px;
+            font-weight: 700 !important; transition: 0.3s;
+        }
+        .btn-plan:hover { background: rgba(14, 165, 233, 0.1); border-color: var(--brand-primary); color: white !important; }
+        
+        .btn-post-nav { 
+            background: var(--brand-gradient); color: white !important; 
+            padding: 10px 20px; border-radius: 12px; font-weight: 700; 
+            box-shadow: 0 8px 15px rgba(99, 102, 241, 0.2);
+            display: inline-flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .btn-post-nav:hover { transform: translateY(-2px); box-shadow: 0 12px 20px rgba(99, 102, 241, 0.3); }
+
+        .profile-dropdown { position: relative; display: flex; align-items: center; padding: 10px 0; }
+        .profile-pic { width: 42px; height: 42px; border-radius: 50%; border: 2px solid var(--brand-primary); object-fit: cover; }
+        
+        .dropdown-menu {
+            display: none; position: absolute; right: 0; top: 55px;
+            background: white; border-radius: 15px; min-width: 240px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15); overflow: hidden;
+            border: 1px solid #e2e8f0; z-index: 1300;
+        }
+        
+        .profile-dropdown::after { content: ""; position: absolute; top: 40px; right: 0; width: 100%; height: 20px; background: transparent; }
+        .profile-dropdown:hover .dropdown-menu { display: block; animation: slideUp 0.3s ease; }
+        
+        @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .dropdown-user-info { padding: 15px 20px; background: #f8fafc; border-bottom: 1px solid #e2e8f0; }
+        .dropdown-user-info strong { display: block; font-size: 14px; color: var(--navy-navbar); }
+
+        .dropdown-menu a { display: block; padding: 12px 20px; color: #1e293b !important; font-size: 14px; font-weight: 600; }
+        .dropdown-menu a:hover { background: #f0f9ff; color: var(--brand-primary) !important; padding-left: 25px; transition: 0.2s; }
+
+        #flash-container { position: fixed; top: 80px; left: 50%; transform: translateX(-50%); z-index: 1100; width: 100%; max-width: 600px; padding: 0 20px; }
+        .flash-msg { padding: 12px 25px; border-radius: 0 0 15px 15px; text-align: center; font-weight: 700; font-size: 14px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); background: #dcfce7; color: #166534; border: 1px solid #bbf7d0; border-top: none; }
+
+        main { flex-grow: 1; }
+        footer { background: #010409; color: #94a3b8; padding: 40px 0; text-align: center; border-top: 1px solid rgba(255,255,255,0.05); margin-top: auto; }
+    </style>
+    {% block head_extra %}{% endblock %}
+</head>
+<body>
+
+<header>
+    <nav>
+        <a href="{{ url_for('home') }}" class="logo">GoSkill<span>Nexa</span></a>
+        
+        <div class="nav-links">
+            <a href="{{ url_for('search') }}" class="nav-link-item">
+                <i class="fas fa-briefcase"></i> Jobs
+            </a>
+            
+            <a href="{{ url_for('hire') }}" class="btn-plan">
+                <i class="fas fa-gem"></i> Choose Plan
+            </a>
+            
+            {% if session.user_id %}
+                <a href="{{ url_for('employer_dashboard') }}" class="btn-post-nav">
+                    <i class="fas fa-plus-circle"></i> Post Job
+                </a>
+
+                <div class="profile-dropdown">
+                    <img src="{{ url_for('static', filename='profile_pics/' + (session.profile_image or 'default.png')) }}" 
+                         alt="Profile" class="profile-pic" onerror="this.src='/static/profile_pics/default.png';">
+                    <div class="dropdown-menu">
+                        <div class="dropdown-user-info"><strong>{{ session.user_name }}</strong></div>
+                        <a href="{{ url_for('dashboard') }}"><i class="fas fa-user-circle"></i> Profile Settings</a>
+                        <a href="{{ url_for('employer_dashboard') }}"><i class="fas fa-chart-pie"></i> Employer Dashboard</a>
+                        
+                        <a href="javascript:void(0);" onclick="confirmLogout()" style="color: #f43f5e !important; border-top: 1px solid #f1f5f9; margin-top:5px;">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
+                </div>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="nav-link-item">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn-post-nav">Join Free</a>
+            {% endif %}
+        </div>
+    </nav>
+</header>
+
+<main>
+    <div id="flash-container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}{% for category, message in messages %}<div class="flash-msg">{{ message }}</div>{% endfor %}{% endif %}
+        {% endwith %}
+    </div>
+    {% block content %}{% endblock %}
+</main>
+
+<footer>
+    <p>© 2026 GoSkillNexa Pro. Precision Hiring for Elite Teams.</p>
+</footer>
+
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Sign Out?',
+            text: "Are you sure you want to log out of your session?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#0ea5e9', 
+            cancelButtonColor: '#f43f5e',  
+            confirmButtonText: 'Yes, Logout',
+            cancelButtonText: 'Cancel',
+            background: '#ffffff',
+            borderRadius: '15px'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{{ url_for('logout') }}";
+            }
+        })
+    }
+
+    setTimeout(() => {
+        document.querySelectorAll('.flash-msg').forEach(msg => {
+            msg.style.opacity = "0";
+            msg.style.transform = "translateY(-20px)";
+            msg.style.transition = "0.5s";
+            setTimeout(() => msg.remove(), 500);
+        });
+    }, 5000);
+</script>
+
+</body>
+</html>
