@@ -39,3 +39,6 @@ python app.py
 
 ## Dashboard Page
 ![Dashboard](dashboard.png)
+
+## GoSkillNexa-Pro
+![GoSkillNexa-Pro](goskillnexa-pro.png)
